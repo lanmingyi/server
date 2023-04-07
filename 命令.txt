@@ -1,0 +1,11 @@
+1.jar包运行
+	java -jar cv-system-start-1.0.0.jar
+后台运行
+	windows下：javaw -jar cv-system-start-1.0.0.jar
+	taskkill /f /im javaw.exe
+	jps -l  或  netstat -ano | findstr  31000
+	taskkill -f -pid 进程号
+linux下
+	nohup java -jar cv-system-start-1.0.0.jar 2>&1 &    或 nohup java -jar cv-system-start-1.0.0.jar >msg.log 2>&1 &
+	ps -ef|grep java 或 ps -aux | grep java
+	kill -9 进程号   # 杀死进程
