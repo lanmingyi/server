@@ -1,10 +1,14 @@
 package com.bright.system;
 
-import com.bright.common.util.ConvertUtil;
+import com.bright.common.util.ConvertUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
@@ -12,7 +16,15 @@ import java.net.UnknownHostException;
 
 @Slf4j
 @SpringBootApplication
-public class SystemApplication {
+//@SpringBootApplication(scanBasePackages = {"com.bright", "org.bright"})
+@ComponentScan({"com.bright"})
+//@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
+public class SystemApplication extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(SystemApplication.class);
+    }
 
     public static void main(String[] args) throws UnknownHostException {
 //        SpringApplication.run(SystemApplication.class, args);
@@ -20,7 +32,7 @@ public class SystemApplication {
         Environment env = application.getEnvironment();
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
-        String path = ConvertUtil.getString(env.getProperty("server.servlet.context-path"));
+        String path = ConvertUtils.getString(env.getProperty("server.servlet.context-path"));
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application cv-spring is running! Access URLs:\n\t" +
                 "Local: \t\thttp://localhost:" + port + path + "/\n\t" +

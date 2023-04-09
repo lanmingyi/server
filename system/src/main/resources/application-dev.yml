@@ -13,6 +13,12 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 'customer88'
+
 #  解决 Failed to start bean ‘documentationPluginsBootstrapper’; nested exception is java.lang.NullPointerException
   mvc:
     static-path-pattern: /**

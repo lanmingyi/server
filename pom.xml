@@ -17,10 +17,24 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<server.vision>1.0.0</server.vision>
+		<server.version>1.0.0</server.version>
 		<java.version>1.8</java.version>
+
+		<!-- 微服务 -->
 		<knife4j-spring-boot-starter.version>3.0.3</knife4j-spring-boot-starter.version>
-<!--		<slf4j.version>1.7.30</slf4j.version>-->
+		<!-- 数据库驱动 -->
+		<hutool.version>5.3.8</hutool.version>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
+		<mysql-connector-java.version>8.0.27</mysql-connector-java.version>
+		<!-- 持久层 -->
+		<mybatis-plus.version>3.5.1</mybatis-plus.version>
+		<!-- 积木报表-->
+		<commons.version>2.6</commons.version>
+		<!-- shiro -->
+		<shiro.version>1.9.1</shiro.version>
+		<java-jwt.version>3.11.0</java-jwt.version>
+		<shiro-redis.version>3.1.0</shiro-redis.version>
+
 	</properties>
 
 	<modules>
@@ -37,40 +51,99 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- 单元测试 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
+		<!--加载配置信息-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- system 模块-->
+			<dependency>
+				<groupId>com.bright</groupId>
+				<artifactId>system</artifactId>
+				<version>${server.version}</version>
+			</dependency>
+			<!-- common -->
+			<dependency>
+				<groupId>com.bright</groupId>
+				<artifactId>common</artifactId>
+				<version>${server.version}</version>
+			</dependency>
+
+			<!-- hutool工具类-->
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-core</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-crypto</artifactId>
+				<version>${hutool.version}</version>
+			</dependency>
+			<!-- commons-beanutils -->
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>${commons-beanutils.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--			</plugin>-->
+			<!-- 指定JDK编译版本 -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- 打包跳过测试 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>
@@ -78,14 +151,14 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
-<!--			<resource>-->
-<!--				<directory>src/main/java</directory>-->
-<!--				<includes>-->
-<!--					<include>**/*.xml</include>-->
-<!--					<include>**/*.json</include>-->
-<!--					<include>**/*.ftl</include>-->
-<!--				</includes>-->
-<!--			</resource>-->
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.json</include>
+					<include>**/*.ftl</include>
+				</includes>
+			</resource>
 		</resources>
 	</build>
 
