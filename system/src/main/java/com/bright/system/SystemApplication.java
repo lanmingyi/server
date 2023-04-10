@@ -17,7 +17,7 @@ import java.net.UnknownHostException;
 @Slf4j
 @SpringBootApplication
 //@SpringBootApplication(scanBasePackages = {"com.bright", "org.bright"})
-@ComponentScan({"com.bright"})
+@ComponentScan({"com.bright","com.bright.modules"})
 //@EnableAutoConfiguration(exclude={MongoAutoConfiguration.class})
 public class SystemApplication extends SpringBootServletInitializer {
 

@@ -438,10 +438,8 @@ public class ConvertUtils {
             return "";
         } else if (!name.contains(SymbolConstant.UNDERLINE)) {
             // 不含下划线，仅将首字母小写
-            //update-begin for：【代码生成器】代码生成器开发一通用模板生成功能
-            //update-begin for：【代码生成器】代码生成器开发一通用模板生成功能
+            // 【代码生成器】代码生成器开发一通用模板生成功能
             return name.substring(0, 1).toLowerCase() + name.substring(1).toLowerCase();
-            //update-end for：【代码生成器】代码生成器开发一通用模板生成功能
         }
         // 用下划线将原始字符串分割
         String[] camels = name.split("_");
@@ -486,7 +484,7 @@ public class ConvertUtils {
         return result.substring(0, result.length() - 1);
     }
 
-    //update-begin for：【代码生成器】代码生成器开发一通用模板生成功能
+    // 【代码生成器】代码生成器开发一通用模板生成功能
     /**
      * 将下划线大写方式命名的字符串转换为驼峰式。(首字母写)
      * 如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。</br>
@@ -519,7 +517,6 @@ public class ConvertUtils {
         }
         return result.toString();
     }
-    //update-end for：【代码生成器】代码生成器开发一通用模板生成功能
 
     /**
      * 将驼峰命名转化成下划线

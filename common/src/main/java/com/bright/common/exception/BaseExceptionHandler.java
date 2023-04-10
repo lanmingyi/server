@@ -83,7 +83,6 @@ public class BaseExceptionHandler {
 	}
 	
 	/**
-	 * @Author lmy
 	 * @param e
 	 * @return
 	 */

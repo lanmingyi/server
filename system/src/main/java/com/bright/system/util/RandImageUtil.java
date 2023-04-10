@@ -11,7 +11,6 @@ import java.util.Random;
 
 /**
  * 登录验证码工具类
- * @author lmy
  */
 public class RandImageUtil {
 

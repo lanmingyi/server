@@ -229,7 +229,7 @@ public class JwtUtil {
 		else if (key.equals(DataBaseConstant.BPM_STATUS)|| key.toLowerCase().equals(DataBaseConstant.BPM_STATUS_TABLE)) {
 			returnValue = "1";
 		}
-		//update-begin for:多租户ID作为系统变量
+		// 多租户ID作为系统变量
 		else if (key.equals(DataBaseConstant.TENANT_ID) || key.toLowerCase().equals(DataBaseConstant.TENANT_ID_TABLE)){
 			returnValue = sysUser.getRelTenantIds();
             boolean flag = returnValue != null && returnValue.indexOf(SymbolConstant.COMMA) > 0;
@@ -237,7 +237,6 @@ public class JwtUtil {
 				returnValue = SpringContextUtils.getHttpServletRequest().getHeader(CommonConstant.TENANT_ID);
 			}
 		}
-		//update-end for:多租户ID作为系统变量
 		if(returnValue!=null){returnValue = returnValue + moshi;}
 		return returnValue;
 	}

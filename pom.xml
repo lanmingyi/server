@@ -22,18 +22,26 @@
 
 		<!-- 微服务 -->
 		<knife4j-spring-boot-starter.version>3.0.3</knife4j-spring-boot-starter.version>
+
+		<fastjson.version>1.2.83</fastjson.version>
 		<!-- 数据库驱动 -->
 		<hutool.version>5.3.8</hutool.version>
 		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<mysql-connector-java.version>8.0.27</mysql-connector-java.version>
+		<guava.version>29.0-jre</guava.version>
 		<!-- 持久层 -->
 		<mybatis-plus.version>3.5.1</mybatis-plus.version>
+		<dynamic-datasource-spring-boot-starter.version>3.2.0</dynamic-datasource-spring-boot-starter.version>
 		<!-- 积木报表-->
 		<commons.version>2.6</commons.version>
+		<aliyun.oss.version>3.11.2</aliyun.oss.version>
 		<!-- shiro -->
 		<shiro.version>1.9.1</shiro.version>
 		<java-jwt.version>3.11.0</java-jwt.version>
 		<shiro-redis.version>3.1.0</shiro-redis.version>
+		<minio.version>8.0.3</minio.version>
+
+		<poi.version>4.1.2</poi.version>
 
 	</properties>
 
@@ -84,6 +92,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+		<!-- json -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -99,6 +113,22 @@
 				<groupId>com.bright</groupId>
 				<artifactId>common</artifactId>
 				<version>${server.version}</version>
+			</dependency>
+			<!--minio-->
+			<dependency>
+				<groupId>io.minio</groupId>
+				<artifactId>minio</artifactId>
+				<version>${minio.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>okio</artifactId>
+						<groupId>com.squareup.okio</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>okhttp</artifactId>
+						<groupId>com.squareup.okhttp3</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<!-- hutool工具类-->

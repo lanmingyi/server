@@ -5,7 +5,6 @@ import com.bright.common.system.vo.LoginUser;
 
 /**
  * common接口
- * @author lmy
  */
 public interface BaseCommonService {
 

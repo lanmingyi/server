@@ -13,9 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @Author: lmy
- * @Date 2019/9/23 14:12
- * @Description: 编程校验token有效性
+ * 编程校验token有效性
  */
 @Slf4j
 public class TokenUtils {

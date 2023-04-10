@@ -8,7 +8,6 @@ import java.util.Set;
 
 /**
  * 通用api
- * @author lmy
  */
 public interface CommonAPI {
 
