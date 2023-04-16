@@ -169,10 +169,10 @@ public class SysUser implements Serializable {
     @Dict(dictTable ="sys_depart",dicText = "depart_name",dicCode = "id")
     private String departIds;
 
-    /**
-     * 多租户id配置，编辑用户的时候设置
-     */
-    private String relTenantIds;
+//    /**
+//     * 多租户id配置，编辑用户的时候设置
+//     */
+//    private String relTenantIds;
 
     /**设备id uni-app推送用*/
     private String clientId;

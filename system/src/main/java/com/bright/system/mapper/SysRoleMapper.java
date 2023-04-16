@@ -23,7 +23,6 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     /**
      * 删除角色与权限关系
      * @param roleId
-     * @Date 2019/12/13 16:12
      */
     @Delete("delete from sys_role_permission where role_id = #{roleId}")
     void deleteRolePermissionRelation(@Param("roleId") String roleId);

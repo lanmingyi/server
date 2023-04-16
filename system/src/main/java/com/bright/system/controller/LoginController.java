@@ -130,22 +130,22 @@ public class LoginController {
         redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME * 2 / 1000);
         obj.put("token", token);
 
-        // 获取用户租户信息
-        String tenantIds = sysUser.getRelTenantIds();
-        if (ConvertUtils.isNotEmpty(tenantIds)) {
-            List<Integer> tenantIdList = new ArrayList<>();
-            for(String id: tenantIds.split(SymbolConstant.COMMA)){
-                tenantIdList.add(Integer.valueOf(id));
-            }
-            // 该方法仅查询有效的租户，如果返回0个就说明所有的租户均无效。
-//            List<SysTenant> tenantList = sysTenantService.queryEffectiveTenant(tenantIdList);
-//            if (tenantList.size() == 0) {
-//                result.error500("与该用户关联的租户均已被冻结，无法登录！");
-//                return result;
-//            } else {
-//                obj.put("tenantList", tenantList);
+//        // 获取用户租户信息
+//        String tenantIds = sysUser.getRelTenantIds();
+//        if (ConvertUtils.isNotEmpty(tenantIds)) {
+//            List<Integer> tenantIdList = new ArrayList<>();
+//            for(String id: tenantIds.split(SymbolConstant.COMMA)){
+//                tenantIdList.add(Integer.valueOf(id));
 //            }
-        }
+//            // 该方法仅查询有效的租户，如果返回0个就说明所有的租户均无效。
+////            List<SysTenant> tenantList = sysTenantService.queryEffectiveTenant(tenantIdList);
+////            if (tenantList.size() == 0) {
+////                result.error500("与该用户关联的租户均已被冻结，无法登录！");
+////                return result;
+////            } else {
+////                obj.put("tenantList", tenantList);
+////            }
+//        }
 
         obj.put("userInfo", sysUser);
 
