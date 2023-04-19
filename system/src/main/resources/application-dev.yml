@@ -26,9 +26,10 @@ spring:
       max-file-size: 100MB  # 文件上传大小限制
       max-request-size: 100MB  # 文件上传大小限制
   mail:
-    host: 1972399206@qq.com
+    host: smtp.qq.com
     username: 1972399206@qq.com
     password: ??
+    port: 465
     properties:
       mail:
         smtp:
