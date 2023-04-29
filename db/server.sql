@@ -3,15 +3,15 @@
 
  Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 50735 (5.7.35)
+ Source Server Version : 50723 (5.7.23)
  Source Host           : localhost:3306
  Source Schema         : server
 
  Target Server Type    : MySQL
- Target Server Version : 50735 (5.7.35)
+ Target Server Version : 50723 (5.7.23)
  File Encoding         : 65001
 
- Date: 28/04/2023 21:27:19
+ Date: 29/04/2023 17:02:44
 */
 
 SET NAMES utf8mb4;
@@ -235,6 +235,8 @@ INSERT INTO `sys_log` VALUES ('1651917715354472450', 1, '用户名: admin,登录
 INSERT INTO `sys_log` VALUES ('1651919097734156289', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-28 19:59:39', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1651920016248983553', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-28 20:03:18', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1651922389772062722', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-28 20:12:44', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1652134754611888129', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-29 10:16:35', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1652205432308498434', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-29 14:57:26', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -326,13 +328,13 @@ INSERT INTO `sys_permission` VALUES ('1565579914460655617', '1603666184591998978
 INSERT INTO `sys_permission` VALUES ('1572423290645192705', '', '预警系统', '/earth/warning', 'layouts/RouteView', NULL, NULL, 0, NULL, '1', 21.00, 0, 'bell', 1, 0, 0, 0, 0, NULL, 'admin', '2022-09-21 11:11:41', 'admin', '2022-12-16 11:25:11', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1572479217918353410', '1572423290645192705', '台风预警系统', '/earth/warning/TyphoonWarningSystem', 'earth/warning/TyphoonWarningSystem', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-09-21 14:53:55', 'admin', '2022-12-16 11:25:39', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1574207524774191106', '', '系统管理', '/system', 'Layout', NULL, NULL, 0, NULL, '1', 22.00, 0, 'environment', 1, 0, 0, 0, 0, NULL, 'admin', '2022-09-26 09:21:36', 'admin', '2022-12-16 11:25:52', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1575662879864889345', '', '计算机视觉', '/vision/computer', 'layouts/RouteView', NULL, NULL, 0, NULL, '1', 1.00, 0, 'camera', 0, 0, 0, 0, 0, NULL, 'admin', '2022-09-30 09:44:40', 'admin', '2023-04-28 20:41:51', 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1575662879864889345', '', '计算机视觉', '/vision/computer', 'layouts/RouteView', NULL, NULL, 0, NULL, '1', 1.00, 0, 'camera', 1, 0, 0, 0, 0, NULL, 'admin', '2022-09-30 09:44:40', 'admin', '2023-04-28 20:41:51', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1575664633943793665', '1574207524774191106', '菜单管理', '/system/menu', 'system/menu/index', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-09-30 09:51:38', 'admin', '2022-12-31 17:56:40', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1578930711367081986', '1575662879864889345', '目标检测', '/vision/computer/ObjectDetection', 'vision/computer/ObjectDetection', NULL, NULL, 1, NULL, '1', 2.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:09:51', 'admin', '2022-12-16 10:54:17', 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1578930711367081986', '1575662879864889345', '目标检测', '/demo/form-design', 'demo/FormDesign', NULL, NULL, 1, NULL, '1', 2.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:09:51', 'admin', '2023-04-29 16:35:13', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1578935030602620930', '1575662879864889345', '风格迁移', '/vision/computer/StyleTransfer', 'vision/computer/StyleTransfer', NULL, NULL, 1, NULL, '1', 12.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:27:01', 'admin', '2022-12-16 11:01:47', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1578939092404363265', '1575662879864889345', '人脸识别', '/vision/computer/FaceRecognition', 'vision/computer/FaceRecognition', NULL, NULL, 1, NULL, '1', 10.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:43:10', 'admin', '2022-12-16 11:06:46', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1578943012690288642', '1575662879864889345', '姿态估计', '/vision/computer/PoseDetection', 'vision/computer/PoseDetection', NULL, NULL, 1, NULL, '1', 11.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:58:44', 'admin', '2022-12-16 11:07:18', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1581889121679065089', '1575662879864889345', '图像处理', '/vision/computer/ImageProcessing', 'vision/computer/ImageProcessing', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-17 14:05:31', 'admin', '2023-04-28 20:42:02', 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1581889121679065089', '1575662879864889345', '图像处理', '/demo/workflow', 'demo/workflow', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-17 14:05:31', 'admin', '2023-04-29 10:35:21', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1584876317008211969', '1563449103292620801', '滑坡检测', '/vision/earth/LandslideDetection', 'vision/earth/LandslideDetection', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-25 19:55:34', 'admin', '2022-12-16 11:24:27', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1593159248304910337', 'e41b69c57a941a3bbcce45032fe57605', '移动开发', '/system/sysAppBasics/index', 'system/sysAppBasics/index', NULL, NULL, 1, NULL, '1', 2.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-11-17 16:28:59', 'admin', '2022-12-17 17:53:39', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1600401879309492226', '', '移动应用', '/APP', 'APP', NULL, NULL, 0, NULL, '1', 100.00, 0, 'mobile', 1, 0, 0, 1, 0, NULL, 'admin', '2022-12-07 16:08:37', 'admin', '2022-12-07 22:08:09', 0, 0, '1', 0);
