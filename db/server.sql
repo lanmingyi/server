@@ -11,7 +11,7 @@
  Target Server Version : 50735 (5.7.35)
  File Encoding         : 65001
 
- Date: 16/04/2023 17:03:42
+ Date: 28/04/2023 21:27:19
 */
 
 SET NAMES utf8mb4;
@@ -202,6 +202,39 @@ INSERT INTO `sys_log` VALUES ('1647524387645087745', 1, '用户名: admin,登录
 INSERT INTO `sys_log` VALUES ('1647524490208403457', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-16 16:57:03', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1647524647368974337', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-16 16:57:40', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1647525538981535745', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-16 17:01:13', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1647531811953238017', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-16 17:26:08', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650532826373713921', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 00:11:06', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650867519480729602', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 22:21:03', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650875941940957186', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 22:54:31', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650876097167953922', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 22:55:08', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650880593931603969', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:13:00', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650880856318873602', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:14:03', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650883818474770433', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:25:49', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650885542707007489', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:32:40', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650887681227427841', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:41:10', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650888334137954306', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:43:46', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650888640406032385', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:44:59', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1650888775290654722', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-25 23:45:31', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651215383272648705', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:23:20', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651215687175139330', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:24:33', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651218388856369153', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:35:17', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651218488450117633', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:35:40', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651218895335354369', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:37:17', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651219043608195073', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:37:53', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651219230686736386', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:38:37', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651219332616712194', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:39:02', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651219798012489729', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:40:53', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651220065986572290', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:41:57', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651220150531158018', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:42:17', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651220984149078017', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:45:35', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651221191851012097', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:46:25', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651221425431801857', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 21:47:21', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651247031435423745', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-26 23:29:06', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651587968913166338', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-27 22:03:51', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651917715354472450', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-28 19:54:09', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651919097734156289', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-28 19:59:39', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651920016248983553', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-28 20:03:18', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1651922389772062722', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2023-04-28 20:12:44', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -292,14 +325,14 @@ INSERT INTO `sys_permission` VALUES ('1565232925109776386', '1603666184591998978
 INSERT INTO `sys_permission` VALUES ('1565579914460655617', '1603666184591998978', '组织架构图测试', '/system/OrgChartTest', 'system/OrgChartTest', NULL, NULL, 1, NULL, '1', 6.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-09-02 13:58:33', 'admin', '2022-12-16 16:25:32', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1572423290645192705', '', '预警系统', '/earth/warning', 'layouts/RouteView', NULL, NULL, 0, NULL, '1', 21.00, 0, 'bell', 1, 0, 0, 0, 0, NULL, 'admin', '2022-09-21 11:11:41', 'admin', '2022-12-16 11:25:11', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1572479217918353410', '1572423290645192705', '台风预警系统', '/earth/warning/TyphoonWarningSystem', 'earth/warning/TyphoonWarningSystem', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-09-21 14:53:55', 'admin', '2022-12-16 11:25:39', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1574207524774191106', '', '一张图', '/earth/map', 'layouts/RouteView', NULL, NULL, 0, NULL, '1', 22.00, 0, 'environment', 1, 0, 0, 0, 0, NULL, 'admin', '2022-09-26 09:21:36', 'admin', '2022-12-16 11:25:52', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1575662879864889345', '', '计算机视觉', '/vision/computer', 'layouts/RouteView', NULL, NULL, 0, NULL, '1', 1.00, 0, 'camera', 1, 0, 0, 0, 0, NULL, 'admin', '2022-09-30 09:44:40', 'admin', '2022-12-16 10:46:33', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1575664633943793665', '1574207524774191106', 'openlayers', '/earth/map/OpenlayersDemo', 'earth/map/OpenlayersDemo', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-09-30 09:51:38', 'admin', '2022-12-31 17:56:40', 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1574207524774191106', '', '系统管理', '/system', 'Layout', NULL, NULL, 0, NULL, '1', 22.00, 0, 'environment', 1, 0, 0, 0, 0, NULL, 'admin', '2022-09-26 09:21:36', 'admin', '2022-12-16 11:25:52', 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1575662879864889345', '', '计算机视觉', '/vision/computer', 'layouts/RouteView', NULL, NULL, 0, NULL, '1', 1.00, 0, 'camera', 0, 0, 0, 0, 0, NULL, 'admin', '2022-09-30 09:44:40', 'admin', '2023-04-28 20:41:51', 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1575664633943793665', '1574207524774191106', '菜单管理', '/system/menu', 'system/menu/index', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-09-30 09:51:38', 'admin', '2022-12-31 17:56:40', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1578930711367081986', '1575662879864889345', '目标检测', '/vision/computer/ObjectDetection', 'vision/computer/ObjectDetection', NULL, NULL, 1, NULL, '1', 2.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:09:51', 'admin', '2022-12-16 10:54:17', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1578935030602620930', '1575662879864889345', '风格迁移', '/vision/computer/StyleTransfer', 'vision/computer/StyleTransfer', NULL, NULL, 1, NULL, '1', 12.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:27:01', 'admin', '2022-12-16 11:01:47', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1578939092404363265', '1575662879864889345', '人脸识别', '/vision/computer/FaceRecognition', 'vision/computer/FaceRecognition', NULL, NULL, 1, NULL, '1', 10.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:43:10', 'admin', '2022-12-16 11:06:46', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1578943012690288642', '1575662879864889345', '姿态估计', '/vision/computer/PoseDetection', 'vision/computer/PoseDetection', NULL, NULL, 1, NULL, '1', 11.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-09 10:58:44', 'admin', '2022-12-16 11:07:18', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1581889121679065089', '1575662879864889345', '图像处理', '/vision/computer/ImageProcessing', 'vision/computer/ImageProcessing', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-17 14:05:31', 'admin', '2023-01-15 22:11:52', 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1581889121679065089', '1575662879864889345', '图像处理', '/vision/computer/ImageProcessing', 'vision/computer/ImageProcessing', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-17 14:05:31', 'admin', '2023-04-28 20:42:02', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1584876317008211969', '1563449103292620801', '滑坡检测', '/vision/earth/LandslideDetection', 'vision/earth/LandslideDetection', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-10-25 19:55:34', 'admin', '2022-12-16 11:24:27', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1593159248304910337', 'e41b69c57a941a3bbcce45032fe57605', '移动开发', '/system/sysAppBasics/index', 'system/sysAppBasics/index', NULL, NULL, 1, NULL, '1', 2.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-11-17 16:28:59', 'admin', '2022-12-17 17:53:39', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1600401879309492226', '', '移动应用', '/APP', 'APP', NULL, NULL, 0, NULL, '1', 100.00, 0, 'mobile', 1, 0, 0, 1, 0, NULL, 'admin', '2022-12-07 16:08:37', 'admin', '2022-12-07 22:08:09', 0, 0, '1', 0);
@@ -352,7 +385,7 @@ INSERT INTO `sys_permission` VALUES ('2aeddae571695cd6380f6d6d334d6e7d', 'f0675b
 INSERT INTO `sys_permission` VALUES ('2dbbafa22cda07fa5d169d741b81fe12', '08e6b9dc3c04489c8e1ff2ce6f105aa4', '在线文档', '{{ window._CONFIG[\'domainURL\'] }}/doc.html', 'layouts/IframePageView', NULL, NULL, 1, NULL, NULL, 10.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2019-01-30 10:00:01', 'admin', '2022-12-17 12:27:41', 0, 0, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('2e42e3835c2b44ec9f7bc26c146ee531', '1603663701748580354', '结果页', '/result', 'layouts/PageView', NULL, NULL, 1, NULL, NULL, 4.00, 0, 'check-circle-o', 1, 0, 0, 0, 0, NULL, NULL, '2018-12-25 20:34:38', 'admin', '2023-01-28 11:23:30', 0, 0, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('339329ed54cf255e1f9392e84f136901', '2a470fc0c3954d9dbb61de6d80846549', 'helloworld', '/custom/helloworld', 'custom/helloworld', NULL, NULL, 1, NULL, NULL, 100.00, 0, NULL, 1, 1, 0, 0, 0, NULL, NULL, '2018-12-25 20:34:38', 'admin', '2022-12-16 16:24:34', 0, 0, NULL, 0);
-INSERT INTO `sys_permission` VALUES ('3f915b2769fc80648e92d04e84ca059d', 'd7d6e2e4e2934f2c9385a623fd98c6f3', '用户管理', '/system/UserList', 'system/UserList', NULL, NULL, 1, NULL, NULL, 1.10, 0, NULL, 1, 0, 0, 0, 0, NULL, NULL, '2018-12-25 20:34:38', 'admin', '2023-01-01 10:36:22', 0, 0, NULL, 0);
+INSERT INTO `sys_permission` VALUES ('3f915b2769fc80648e92d04e84ca059d', 'd7d6e2e4e2934f2c9385a623fd98c6f3', '用户管理', '/system/UserList', 'system/UserList', NULL, NULL, 1, NULL, NULL, 1.10, 0, NULL, 0, 0, 0, 0, 0, NULL, NULL, '2018-12-25 20:34:38', 'admin', '2023-04-28 20:43:08', 0, 0, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('3fac0d3c9cd40fa53ab70d4c583821f8', '1603667153006460930', '分屏', '/custom/SplitPanel', 'custom/SplitPanel', NULL, NULL, 1, NULL, NULL, 4.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2019-04-25 16:27:06', 'admin', '2023-01-02 13:26:37', 0, 0, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('4148ec82b6acd69f470bea75fe41c357', '1610527584667201537', '单表模型', '/table/Table', 'table/Table', 'DemoList', NULL, 1, NULL, NULL, 1.00, 0, NULL, 1, 0, 0, 0, 0, NULL, NULL, '2018-12-28 15:57:30', 'admin', '2023-01-30 14:12:29', 0, 1, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('4356a1a67b564f0988a484f5531fd4d9', '1610527584667201537', '内嵌Table', '/table/TableExpandeSub', 'table/TableExpandeSub', NULL, NULL, 1, NULL, NULL, 2.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2019-04-04 22:48:13', 'admin', '2023-01-04 15:47:45', 0, 0, NULL, 0);
