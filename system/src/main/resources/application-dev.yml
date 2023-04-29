@@ -6,8 +6,8 @@ server:
     include-exception: true
     include-stacktrace: ALWAYS
     include-message: ALWAYS
-#  servlet:
-#    context-path: /server
+  #  servlet:
+  #    context-path: /server
   compression:
     enabled: true
     min-response-size: 1024
@@ -26,10 +26,15 @@ spring:
       max-file-size: 100MB  # 文件上传大小限制
       max-request-size: 100MB  # 文件上传大小限制
   mail:
+    # 邮件服务器地址
     host: smtp.qq.com
+    # 协议 默认就是smtp
+    protocol: smtp
     username: 1972399206@qq.com
+    # 16位授权码 不是邮箱密码
     password: ??
-    port: 465
+    # smtp的指定端口 使用465要将protocol改为smtps
+    port: 456
     properties:
       mail:
         smtp:
@@ -37,6 +42,9 @@ spring:
           starttls:
             enable: true
             required: true
+#          ssl:  # 设置开启ssl
+#            enable: true
+
   jpa:
     open-in-view: false
   aop:
@@ -65,11 +73,11 @@ spring:
   autoconfigure:
     exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
 
-#  datasource:
-#    url: jdbc:mysql://127.0.0.1:3306/server?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-#    username: root
-#    password: root
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+  #  datasource:
+  #    url: jdbc:mysql://127.0.0.1:3306/server?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+  #    username: root
+  #    password: root
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
     druid:
       stat-view-servlet:
