@@ -1,0 +1,1 @@
+nohup java -jar cv-system-start-1.0.0.jar 2>&1
