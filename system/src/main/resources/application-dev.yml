@@ -19,6 +19,9 @@ management:
     web:
       exposure:
         include: metrics,httptrace
+  health:
+    mail:
+      enabled: false  # 禁用mail健康检查
 
 spring:
   servlet:
@@ -30,20 +33,22 @@ spring:
     host: smtp.qq.com
     # 协议 默认就是smtp
     protocol: smtp
-    username: 1972399206@qq.com
+    #
+    default-encoding: utf-8
+    username: xxx@qq.com
     # 16位授权码 不是邮箱密码
     password: ??
-    # smtp的指定端口 使用465要将protocol改为smtps
-    port: 456
+    # smtp的指定端口 使用465要将protocol改为smtps，587可以使用smtp
+    port: 587
     properties:
       mail:
         smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-#          ssl:  # 设置开启ssl
+#          auth: true
+#          starttls:
 #            enable: true
+#            required: true
+          ssl:  # 设置开启ssl
+            enable: true
 
   jpa:
     open-in-view: false
