@@ -195,4 +195,64 @@ public class LoginController {
         }
         return res;
     }
+
+    /**
+     * app登录
+     * @param sysLoginModel
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/mLogin", method = RequestMethod.POST)
+    public Result<JSONObject> mLogin(@RequestBody SysLoginModel sysLoginModel) throws Exception {
+        Result<JSONObject> result = new Result<JSONObject>();
+        String username = sysLoginModel.getUsername();
+        String password = sysLoginModel.getPassword();
+
+        //1. 校验用户是否有效
+        SysUser sysUser = sysUserService.getUserByName(username);
+        result = sysUserService.checkUserIsEffective(sysUser);
+        if(!result.isSuccess()) {
+            return result;
+        }
+
+        //2. 校验用户名或密码是否正确
+        String userpassword = PasswordUtil.encrypt(username, password, sysUser.getSalt());
+        String syspassword = sysUser.getPassword();
+        if (!syspassword.equals(userpassword)) {
+            result.error500("用户名或密码错误");
+            return result;
+        }
+
+        String orgCode = sysUser.getOrgCode();
+        if(ConvertUtils.isEmpty(orgCode)) {
+            //如果当前用户无选择部门 查看部门关联信息
+            List<SysDepart> departs = sysDepartService.queryUserDeparts(sysUser.getId());
+            // 新建用户，没有设置部门及角色，点击登录提示暂未归属部，一直在登录页面 使用手机号登录 可正常
+            if (departs == null || departs.size() == 0) {
+				/*result.error500("用户暂未归属部门,不可登录!");
+				return result;*/
+            }else{
+                orgCode = departs.get(0).getOrgCode();
+                sysUser.setOrgCode(orgCode);
+                this.sysUserService.updateUserDepart(username, orgCode);
+            }
+        }
+        JSONObject obj = new JSONObject();
+        //用户登录信息
+        obj.put("userInfo", sysUser);
+
+        // 生成token
+        String token = JwtUtil.sign(username, syspassword);
+        // 设置超时时间
+        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, token);
+        redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME*2 / 1000);
+
+        //token 信息
+        obj.put("token", token);
+        result.setResult(obj);
+        result.setSuccess(true);
+        result.setCode(200);
+        baseCommonService.addLog("用户名: " + username + ",登录成功[移动端]！", CommonConstant.LOG_TYPE_1, null);
+        return result;
+    }
 }
