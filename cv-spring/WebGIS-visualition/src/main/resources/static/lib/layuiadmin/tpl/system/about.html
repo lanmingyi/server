@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<div class="layui-card-header">系统设置</div>
+<div class="layui-card-body layui-text layadmin-about">
+    <div class="layui-btn-container">
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-fluid" id="into">进入后台</button>
+    </div>
+</div>
+<script>
+    $("#into").click(function () {
+        window.open("/backstage/index");
+    })
+</script>

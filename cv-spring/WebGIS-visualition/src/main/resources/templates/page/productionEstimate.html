@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>产量估测服务</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/template.css" media="all">
+    <link rel="stylesheet" href="/static/lib/leaflets/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/static/lib/map.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MiniMap/Control.MiniMap.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MousePosition/L.Control.MousePosition.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/EasyButton/easy-button.css">
+    <style>
+        #map {
+            height: calc(100vh - 80px);
+            width: 100%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space8">
+        <div class="layui-col-md9">
+            <div id="map">
+            </div>
+        </div>
+        <div class="layui-col-md3" id="form">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <h3>产量估测服务</h3>
+                </div>
+                <div class="layui-card-body">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">类型</label>
+                            <div class="layui-input-block">
+                                <select name="type" lay-verify="required" lay-filter="type">
+                                    <option value=""></option>
+                                    <option v-for="item in data" :value="item.name">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">时间</label>
+                            <div class="layui-input-block">
+                                <select id="list-date" name="url" lay-verify="required">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="submit">立即展示</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/lib/layuiadmin/layui/layui.js"></script>
+<script src="/static/lib/vue/vue.min.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/esri-leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.ChineseTmsProviders.js"></script>
+<script src="/static/lib/leaflets/MiniMap/Control.MiniMap.js"></script>
+<script src="/static/lib/leaflets/MousePosition/L.Control.MousePosition.js"></script>
+<script src="/static/lib/leaflets/EasyButton/easy-button.js"></script>
+<script src="/static/lib/map.js"></script>
+<script>
+    //产量图例
+    var legend_url="http://183.161.30.119:6080/arcgis/rest/services/dangtu/20180728Yield/MapServer";
+    var vue = new Vue({
+        el: "#form",
+        data: {
+            data: [
+                {
+                    name: "水稻",
+                    urls: [
+                        {
+                            time: "2018-07-28",
+                            url: "http://183.161.30.119:6080/arcgis/rest/services/dangtu/20180728Yield/MapServer"
+                        },
+                        {
+                            time:"2018-03-22",
+                            url:"http://134.175.54.236:6080/arcgis/rest/services/dangtu/yield01/MapServer"
+                        },
+                        {
+                            time:"2017-08-02",
+                            url:"http://134.175.54.236:6080/arcgis/rest/services/dangtu/yield02/MapServer"
+                        }
+                    ]
+                },
+                {}
+            ]
+        },
+        methods: {}
+    });
+
+    layui.use(["layer", "form"], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+
+
+        var map_array = [];
+
+        form.on('select(type)', function (obj) {
+            $('#list-date').empty();
+            var data;
+            for (var i = 0; i < vue.data.length; i++) {
+                if (obj.value == vue.data[i].name) {
+                    data = vue.data[i].urls;
+                    break;
+                }
+            }
+
+            for (var j = 0, len = data.length; j < len; j++) {
+                $('#list-date').append('<option value="' + data[j].url + '">' + data[j].time + '</option>');
+            }
+
+            form.render('select');
+        });
+
+        form.on('submit(submit)', function (obj) {
+            console.log(obj.field);
+            map.setView([31.37709, 118.73139], 14);
+            showMap(obj.field.url, obj.field.type);
+            return false;
+        });
+
+        //展示地图
+        function showMap(url, name) {
+            clean_border();
+            map_array.push(new L.esri.dynamicMapLayer({
+                url: url,
+                opacity: 0.9
+            }).addTo(map));
+            Legend(legend_url, name+"-斤/亩");
+        }
+
+        //清空地图
+        function clean_border() {
+            for (var i = 0; i < map_array.length; i++) {
+                map_array[i].remove();
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

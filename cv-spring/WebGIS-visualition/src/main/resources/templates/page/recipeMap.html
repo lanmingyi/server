@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>配方地图</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/x-icon" href="/static/img/logo.png">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/lib/leaflets/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/static/lib/map.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MiniMap/Control.MiniMap.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MousePosition/L.Control.MousePosition.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/EasyButton/easy-button.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://weixiuyizhan.com/arcgis_js_api/library/3.17/3.17/esri/css/esri.css"/>
+    <style>
+        #map {
+            height: calc(100vh - 80px);
+            width: 100%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space8">
+        <div class="layui-col-md9">
+            <div id="map">
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <h3>测土配方地图</h3>
+                </div>
+                <div class="layui-card-body">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" id="tips">元素选择</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="element" value="N" title="氮" checked="">
+                                <input type="radio" name="element" value="P" title="磷">
+                                <input type="radio" name="element" value="K" title="钾">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="select">
+                            <label class="layui-form-label">作物选择</label>
+                            <div class="layui-input-block">
+                                <select name="crop" lay-filter="crop" required>
+                                    <option v-for="(item,key,index) in crops" :value="item.value">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">预计产量</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="yield" required lay-verify="required|number"
+                                           autocomplete="off"
+                                           placeholder="请输入预计产量(kg/亩)" class="layui-input">
+                                </div>
+                                <div class=" layui-form-mid layui-word-aux">kg/亩</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="submit">生成配方地图</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/lib/layuiadmin/layui/layui.js"></script>
+<script src="/static/lib/vue/vue.min.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/esri-leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.ChineseTmsProviders.js"></script>
+<script src="/static/lib/leaflets/MiniMap/Control.MiniMap.js"></script>
+<script src="/static/lib/leaflets/MousePosition/L.Control.MousePosition.js"></script>
+<script src="/static/lib/leaflets/EasyButton/easy-button.js"></script>
+<script type="text/javascript"
+        src="https://weixiuyizhan.com/arcgis_js_api/library/3.17/3.17/init.js"></script>
+<script src="/static/lib/crop.js"></script>
+<script src="/static/lib/trpf.js"></script>
+<script src="/static/lib/map.js"></script>
+<script th:inline="javascript">
+    var allGP = [[${allGP}]];
+
+    var vue = new Vue({
+        el: "#select",
+        data: {
+            crops: dataone
+        },
+        methods: {}
+    });
+
+
+    layui.use(["layer", "form"], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+
+        var load;
+
+        form.on('radio', function (data) {
+            form.render("select");
+            if (data.value == "N") {
+                vue.crops = dataone;
+                form.render("select");
+            } else if (data.value == "P") {
+                vue.crops = datatwo;
+                form.render("select");
+            } else if (data.value == "K") {
+                vue.crops = datathree;
+                form.render("select");
+            }
+            form.render("select", "crop");
+        });
+
+        $(function () {
+            var tips;
+            $("#tips").on({
+                mouseenter: function () {
+                    var that = this;
+                    tips = layer.tips("单选框请点击两下！！！", that, {
+                        tips: [1, '#01AAED'],
+                        time: 3000,
+                    })
+                }
+            })
+        });
+
+        form.on('select(crop)', function (data) {
+           // console.log(data.value);
+        });
+
+        form.on('submit(submit)', function (obj) {
+            load = top.layer.open({
+                type: 3,
+                shade: 0.8
+            });
+
+            var a = [];
+            if (obj.field.element == "N") {
+                a.IDWZ = "全氮";
+            } else if (obj.field.element == "P") {
+                a.IDWZ = "速效磷";
+            } else if (obj.field.element == "K") {
+                a.IDWZ = "速效钾";
+            }
+
+            var b = obj.field.crop;
+            var c = reclassification(obj.field.element, b);
+            GP_choice(c.Reclassification.length);
+            a.Reclassification = c.Reclassification;
+            a.Production = obj.field.yield;
+            a.need = c.need;
+            DTcount(a);
+
+
+            return false;
+        });
+
+        var maps = [];
+        var gpUrl;
+        var mapServer;
+
+        var Interpolation_five = allGP[0].gpUrl;
+        var Interpolation_five_mapserver = allGP[0].gpMapServer;
+
+        var Interpolation_four = allGP[2].gpUrl;
+        var Interpolation_four_mapserver = allGP[2].gpMapServer;
+
+        var url_querypoint = allGP[1].gpUrl;
+
+        /*选择GP服务*/
+        function GP_choice(data) {
+            if (data >= 38) {
+                gpUrl = Interpolation_five;
+                mapServer = Interpolation_five_mapserver;
+            } else {
+                gpUrl = Interpolation_four;
+                mapServer = Interpolation_four_mapserver;
+            }
+        }
+
+        //元素地图计算
+        function DTcount(data) {
+            var a = [];
+            a = data;
+            ClearMaps();
+
+            var query = new esri.tasks.Query();//定义查询对象
+            //采样点查询地址
+            var queryTask = new esri.tasks.QueryTask(url_querypoint);
+            //返回几何对象
+            query.returnGeometry = true;
+            //判断条件，必须，一般选择FID >-1即可
+            query.where = "FID >-1";
+            //查询出来的字段，用于插值的，要保证是数字类型
+            query.outFields = [a.IDWZ];
+            //查询出来的时候空间参考定义
+            query.outSpatialReference = {"wkid": 4326};
+            //执行采样点查询方法，query是参数，function是成功后调用的方法
+            //console.log(query);
+            queryTask.execute(query, function (fs) {
+                //将返回的几何点数据传输给featureSet
+                //将数据的格式转换为json
+                var featureSet = JSON.stringify(fs);
+                // console.log(featureSet);
+                //创建GP服务的参数
+                var params = {
+                    IDWinput: featureSet, //Points是GP的输入参数名称，要和GP服务一直
+                    IDWZ: a.IDWZ,//插值的字段，名称要和GP一致
+                    Reclassification: a.Reclassification,
+                    Production: a.Production ^ 0.95,
+                    need: a.need
+                };
+                submitJob(params);//改函数为异步执行函数，用于执行长时间的服务
+
+            })
+        }
+
+        //GP服务调用
+        function submitJob(params) {
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                url: gpUrl + '/submitJob?f=json',//异步请求的样式
+                dataType: 'json',
+                async: true,
+                data: params,
+                success: function (result) {
+                    var jobId = result.jobId;
+                    //alert(jobId);
+                    if (jobId) {//jobId是ArcGIS给添加上去的工作编号，每次向服务器发送请求的时候就会生成
+                        Getresult(jobId);//获取结果
+                    }
+                }
+            });
+        }
+
+        //获取结果(判断是否有结果)
+        function Getresult(jobId) {//将jobId传入方法
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: gpUrl + "/jobs/" + jobId + "?f=json",//判断是否生成结果
+                async: true,
+                success: function (result) {
+                    result = eval("(" + result + ")");
+                    if (result.jobStatus === "esriJobSucceeded") {//如果发送请求后的返回值的状态为esriJobSucceeded，说明已经完成操作并生成了结果
+                        showResult(jobId);//展示结果
+                    } else {
+                        //延迟执行方法
+                        setTimeout(function () {
+                            Getresult(jobId);
+                        }, 1000);
+                    }
+                }
+            });
+        }
+
+        //展示地图结果
+        function showResult(jobId) {
+            var mapurl = mapServer + "/jobs/" + jobId;//这里是结果所放置的位置
+            var envLayer = new L.esri.dynamicMapLayer({url: mapurl, opacity: 0.85, useCors: false});//新建动态图层
+            maps.push(envLayer);
+            map.addLayer(envLayer);//加入地图
+            Legend(mapurl, "kg/亩");//加载图例
+            top.layer.close(load);
+        }
+
+        function ClearMaps() {
+            //清空地图
+            for (var i = 0; i < maps.length; i++) {
+                maps[i].remove();
+            }
+            maps.length = 0;
+            if ($(".legend_div") != null) {
+                $(".legend_div").remove()
+            }
+        }
+
+
+    })
+</script>
+</body>
+</html>

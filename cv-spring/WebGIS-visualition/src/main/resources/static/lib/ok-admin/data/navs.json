@@ -1,0 +1,82 @@
+[
+  {
+    "title": "主页",
+    "fontFamily": "ok-icon",
+    "icon": "&#xe901;",
+    "href": "/backstage/home",
+    "isClose": false,
+    "spread": true,
+    "isCheck": true
+  },
+  {
+    "title": "数据管理",
+    "icon": "&#xe614;",
+    "href": "",
+    "spread": true,
+    "children": [
+      {
+        "title": "土壤养分数据",
+        "href": "/backstage/tb_soil",
+        "spread": false
+      },
+      {
+        "title": "土壤墒情数据",
+        "href": "/backstage/tb_meteorological",
+        "spread": false
+      },
+      {
+        "title": "遥感数据管理",
+        "href": "/backstage/tb_remote",
+        "spread": false
+      },
+      {
+        "title": "乡镇信息管理",
+        "href": "/backstage/tb_township",
+        "spread": false
+      },
+      {
+        "title": "村级信息管理",
+        "href": "/backstage/tb_village",
+        "spread": false
+      },
+      {
+        "title": "农业要闻管理",
+        "href": "/backstage/tb_news",
+        "spread": false
+      }
+    ]
+  },
+  {
+    "title": "服务管理",
+    "icon": "&#xe614;",
+    "href": "",
+    "spread": false,
+    "children": [
+      {
+        "title": "GP服务管理",
+        "href": "/backstage/tb_arcgisServerGp",
+        "spread": false
+      },
+      {
+        "title": "土壤养分服务管理",
+        "href": "/backstage/tb_soilManager",
+        "spread": false
+      }
+    ]
+  },
+  {
+    "title": "用户管理",
+    "icon": "&#xe66f;",
+    "href": "",
+    "spread": false,
+    "children": [
+      {
+        "title": "用户列表",
+        "fontFamily": "layui-icon",
+        "icon": "&#xe61c;",
+        "href": "tb_users",
+        "spread": false
+      }
+    ]
+  }
+]

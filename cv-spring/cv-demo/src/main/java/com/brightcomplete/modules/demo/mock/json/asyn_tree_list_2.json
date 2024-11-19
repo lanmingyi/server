@@ -1,0 +1,23 @@
+[
+  {
+    "id": 21,
+    "name": "弹框选择Demo",
+    "component": "custom/SelectDemo",
+    "orderNum": 1,
+    "hasChildren": false
+  },
+  {
+    "id": 22,
+    "name": "单表模型示例",
+    "component": "custom/DemoList",
+    "orderNum": 2,
+    "hasChildren": false
+  },
+  {
+    "id": 23,
+    "name": "一对多Tab示例",
+    "component": "custom/tablist/OrderDMainList",
+    "orderNum": 3,
+    "hasChildren": false
+  }
+]

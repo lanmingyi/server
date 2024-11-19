@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>配方卡</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/x-icon" href="/static/img/logo.png">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/lib/jquery/print/normalize.min.css">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space8">
+
+        <div class="layui-card">
+            <div class="layui-card-body" style="padding: 15px">
+                <form class="layui-form" action="" lay-filter="form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">种植作物</label>
+                            <div class="layui-input-inline">
+                                <select name="crop" lay-verify="required">
+                                    <option value="棉花" selected>棉花</option>
+                                    <option value="小麦">小麦</option>
+                                    <option value="玉米">玉米</option>
+                                    <option value="水稻">水稻</option>
+                                    <option value="油菜">油菜</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">目标产量</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="yield" required lay-verify="required|number"
+                                       placeholder="100～800 单位(kg/亩)"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">kg/亩</div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">氮含量</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="n" required lay-verify="required|number"
+                                       placeholder="82.55 单位(mg/kg)"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">mg/kg</div>
+                        </div>
+                        <div class="layui-inline ">
+                            <label class="layui-form-label">磷含量</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="p" required lay-verify="required|number"
+                                       placeholder="24.30 单位(mg/kg)"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">mg/kg</div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">钾含量</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="k" required lay-verify="required|number"
+                                       placeholder="146.48 单位(mg/kg)"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">mg/kg</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item  layui-col-md-offset1">
+                        <div class="layui-inline">
+                            <button class="layui-btn layui-btn-lg" lay-submit lay-filter="formDemo">生成配方</button>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="reset" class="layui-btn layui-btn-lg layui-btn-primary">清空参数</button>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="print-link no-print layui-btn layui-btn-sm layui-btn-normal"
+                                    onclick="jQuery('#recipe-card').print()">
+                                打印配方卡
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>配方卡</legend>
+        </fieldset>
+        <div id="recipe-card" class="layui-col-md10 layui-col-md-offset1">
+
+            <div class="layui-col-md4" style="padding: 20px" v-for="(vals,key,index) in recipes">
+                <div class="layui-card">
+                    <div class="layui-card-header">{{key}}</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="100">
+                                <col width="100">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>名称</th>
+                                <th>数量</th>
+                                <th>单位</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(v,k,i) in vals">
+                                <td>{{k}}</td>
+                                <td>{{v.value}}</td>
+                                <td>{{v.unit}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/lib/layuiadmin/layui/layui.js"></script>
+<script src="/static/lib/vue/vue.min.js"></script>
+<script src="/static/lib/jquery/print/jQuery.print.js"></script>
+<script>
+
+    var N_manures = [
+        {"text": "尿素", "dan_value": "46", "P2O5_value": "0", "K2O_value": "0"},
+        {"text": "硫铵", "dan_value": "21", "P2O5_value": "0", "K2O_value": "0"},
+        {"text": "氯化铵", "dan_value": "25", "P2O5_value": "0", "K2O_value": "0"},
+        {"text": "碳酸氢铵", "dan_value": "30", "P2O5_value": "0", "K2O_value": "0"},
+        {"text": "硝酸铵", "dan_value": "45", "P2O5_value": "0", "K2O_value": "0"}
+    ]
+
+    var P_manures = [
+        {"text": "过磷酸钙", "dan_value": "0", "P2O5_value": "12", "K2O_value": "0"},
+        {"text": "钙镁磷肥", "dan_value": "0", "P2O5_value": "15", "K2O_value": "0"},
+        {"text": "磷矿粉", "dan_value": "0", "P2O5_value": "14", "K2O_value": "0"}
+    ]
+
+    var K_manures = [
+        {"text": "硫酸钾", "dan_value": "0", "P2O5_value": "0", "K2O_value": "50"},
+        {"text": "氮化钾", "dan_value": "0", "P2O5_value": "0", "K2O_value": "60"}
+    ]
+
+    var cropdata = [
+        {"text": "水稻", "nutrient": {"N": "2.4", "P": "1.30", "K": "3.30"}},
+        {"text": "冬小麦", "nutrient": {"N": "3.00", "P": "1.00", "K": "2.50"}},
+        {"text": "春小麦", "nutrient": {"N": "3.00", "P": "1.25", "K": "2.50"}},
+        {"text": "玉米", "nutrient": {"N": "2.57", "P": "0.86", "K": "2.14"}},
+        {"text": "棉花", "nutrient": {"N": "5.00", "P": "1.80", "K": "4.00"}},
+        {"text": "油菜", "nutrient": {"N": "5.80", "P": "2.50", "K": "4.30"}},
+        {"text": "烤烟", "nutrient": {"N": "4.10", "P": "0.70", "K": "1.10"}},
+        {"text": "花生", "nutrient": {"N": "6.80", "P": "1.30", "K": "3.80"}},
+        {"text": "柑桔", "nutrient": {"N": "0.60", "P": "0.11", "K": "0.40"}},
+        {"text": "辣椒", "nutrient": {"N": "0.55", "P": "0.10", "K": "0.75"}},
+        {"text": "萝卜", "nutrient": {"N": "0.60", "P": "0.31", "K": "0.50"}},
+        {"text": "黄瓜", "nutrient": {"N": "0.40", "P": "0.35", "K": "0.55"}},
+        {"text": "马铃薯", "nutrient": {"N": "0.50", "P": "0.20", "K": "1.06"}},
+        {"text": "白菜", "nutrient": {"N": "0.41", "P": "0.14", "K": "0.37"}},
+        {"text": "西瓜", "nutrient": {"N": "0.15", "P": "0.07", "K": "0.32"}},
+        {"text": "甘蔗", "nutrient": {"N": "0.19", "P": "0.07", "K": "0.30"}},
+        {"text": "西红柿", "nutrient": {"N": "0.45", "P": "0.50", "K": "0.56"}},
+        {"text": "苎麻", "nutrient": {"N": "12.80", "P": "3.20", "K": "16.50"}},
+        {"text": "大葱", "nutrient": {"N": "0.30", "P": "0.12", "K": "0.40"}},
+        {"text": "草莓", "nutrient": {"N": "0.40", "P": "0.10", "K": "0.45"}}
+    ];
+
+    layui.use(["layer", "form"], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+
+        var vue = new Vue({
+            el: '#recipe-card',
+            data: {
+                N_using_efficiency: 0.4,
+                P_using_efficiency: 0.25,
+                K_using_efficiency: 0.5,
+                nutrient: {
+                    N: 0,
+                    P: 0,
+                    K: 0
+                },
+                recipes: {
+                    氮肥: {
+                        尿素: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        },
+                        硫铵: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        },
+                        氯化铵: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        },
+                        碳酸氢铵: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        },
+                        硝酸铵: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        }
+                    },
+                    磷肥: {
+                        过磷酸钙: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        },
+                        钙镁磷肥: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        },
+                        磷矿粉: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        }
+                    },
+                    钾肥: {
+                        硫酸钾: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        },
+                        氮化钾: {
+                            value: 0,
+                            unit: 'kg/亩'
+                        }
+                    }
+                }
+            }, methods: {
+                nutrient_chose: function (data) {
+                    if (data == '棉花') {
+                        // {"text":"棉花","nutrient":{"N":"5.00","P":"1.80","K":"4.00"}},
+                        this.nutrient.N = 5;
+                        this.nutrient.P = 1.8;
+                        this.nutrient.K = 4;
+                    } else if (data == '小麦') {
+                        this.nutrient.N = 3;
+                        this.nutrient.P = 1;
+                        this.nutrient.K = 2.5;
+                    } else if (data == '玉米') {
+                        //{"text":"玉米","nutrient":{"N":"2.57","P":"0.86","K":"2.14"}},
+                        this.nutrient.N = 2.57;
+                        this.nutrient.P = 0.86;
+                        this.nutrient.K = 2.14;
+                    } else if (data == '水稻') {
+                        //     {"text": "水稻", "nutrient": {"N": "2.4", "P": "1.30", "K": "3.30"}},
+                        this.nutrient.N = 2.4;
+                        this.nutrient.P = 1.30;
+                        this.nutrient.K = 3.30;
+                    } else if (data == '油菜') {
+                        //    {"text": "油菜", "nutrient": {"N": "5.80", "P": "2.50", "K": "4.30"}},
+                        this.nutrient.N = 5.80;
+                        this.nutrient.P = 2.50;
+                        this.nutrient.K = 4.30;
+                    }
+                },
+                formula_calculation: function (data) {
+                    var need_N = (data.yield / 100 * this.nutrient.N) - (data.n * 0.16);
+                    var need_P = (data.yield / 100 * this.nutrient.P) - (data.p * 0.16);
+                    var need_K = (data.yield / 100 * this.nutrient.K) - (data.k * 0.16);
+                    //console.log("需要 N " + need_N.toFixed(1) + "公斤；需要 P " + need_P.toFixed(1) + "公斤；需要 K " + need_K.toFixed(1) + "公斤.");
+
+                    var using_N = need_N / this.N_using_efficiency;
+                    var using_P = need_P / this.P_using_efficiency;
+                    var using_K = need_K / this.K_using_efficiency;
+                    //console.log("施入纯氮 " + using_N.toFixed(1) + "公斤；施入磷肥 " + using_P.toFixed(1) + "公斤；施入钾肥 " + using_K.toFixed(1) + "公斤.");
+
+                    //console.log("使用单元素肥料，如氮肥用尿素补充，磷用过磷酸钙补充，钾用硫酸钾补充");
+                    // var manure_N = using_N / (this.dan_value / 100);
+                    // var manure_P = using_P / (this.P2O5_value / 100);
+                    // var manure_K = using_K / (this.K2O_value / 100);
+
+                    /************************************/
+                    //N
+                    //尿素
+                    var urea = using_N / (N_manures[0].dan_value / 100);
+                    this.recipes.氮肥.尿素.value = urea.toFixed(2);
+                    //硫铵
+                    var ammonium_sulfate = using_N / (N_manures[1].dan_value / 100);
+                    this.recipes.氮肥.硫铵.value = ammonium_sulfate.toFixed(2);
+                    //氯化铵
+                    var ammonium_chloride = using_N / (N_manures[2].dan_value / 100);
+                    this.recipes.氮肥.氯化铵.value = ammonium_chloride.toFixed(2);
+                    //碳酸氢铵
+                    var ammonium_bicarbonate = using_N / (N_manures[3].dan_value / 100);
+                    this.recipes.氮肥.碳酸氢铵.value = ammonium_bicarbonate.toFixed(2);
+                    //硝酸铵
+                    var ammonium_nitrate = using_N / (N_manures[4].dan_value / 100);
+                    this.recipes.氮肥.硝酸铵.value = ammonium_nitrate.toFixed(2);
+                    /************************************/
+                    //P
+                    //过磷酸钙
+                    var superphosphate = using_P / (P_manures[0].P2O5_value / 100);
+                    this.recipes.磷肥.过磷酸钙.value = superphosphate.toFixed(2);
+                    //钙镁磷肥
+                    var calcium_magnesium_phosphate_fertilizer = using_P / (P_manures[1].P2O5_value / 100);
+                    this.recipes.磷肥.钙镁磷肥.value = calcium_magnesium_phosphate_fertilizer.toFixed(2);
+                    //磷矿粉
+                    var ground_phosphate_rock = using_P / (P_manures[2].P2O5_value / 100);
+                    this.recipes.磷肥.磷矿粉.value = ground_phosphate_rock.toFixed(2);
+                    /************************************/
+                    //K
+                    //硫酸钾
+                    var potassium_sulphate = using_K / (K_manures[0].K2O_value / 100);
+                    this.recipes.钾肥.硫酸钾.value = potassium_sulphate.toFixed(2);
+                    //氮化钾
+                    var potassium_nitride = using_K / (K_manures[1].K2O_value / 100);
+                    this.recipes.钾肥.氮化钾.value = potassium_nitride.toFixed(2);
+                }
+            }
+        });
+
+        form.on('submit(formDemo)', function (obj) {
+            var load = layer.load(2, {shade: [0.8, "#393D49"]});
+            //三秒后响应
+            setTimeout(function () {
+                //计算，赋值
+                vue.nutrient_chose(obj.field.crop);
+                vue.formula_calculation(obj.field);
+                layer.close(load);
+                layer.msg('配方生成成功', {icon: 1});
+            }, 2000);
+            return false;
+        })
+
+    })
+</script>
+</body>
+</html>

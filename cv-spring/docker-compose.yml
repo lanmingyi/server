@@ -1,0 +1,42 @@
+version: '2'
+services:
+  jeecg-boot-mysql:
+    build:
+      context: ./db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      TZ: Asia/Shanghai
+    restart: always
+    container_name: cv-spring-mysql
+    image: cv-spring-mysql
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+      --lower_case_table_names=1
+      --max_allowed_packet=128M
+      --default-authentication-plugin=caching_sha2_password
+    ports:
+      - 3306:3306
+
+  jeecg-boot-redis:
+    image: redis:5.0
+    ports:
+      - 6379:6379
+    restart: always
+    hostname: cv-spring-redis
+    container_name: cv-spring-redis
+
+  cv-spring-system:
+    build:
+      context: ./cv-system/cv-system-start
+    restart: on-failure
+    depends_on:
+      - cv-spring-mysql
+      - cv-spring-redis
+    container_name: cv-spring-system
+    image: cv-spring-system
+    hostname: cv-spring-system
+    ports:
+      - 8080:8080

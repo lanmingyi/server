@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cv-server-cloud</artifactId>
+        <groupId>com.brightcomplete.cv</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>cv-system-cloud-start</artifactId>
+    <description>System微服务启动</description>
+
+    <dependencies>
+        <!-- 引入cv-starter-cloud依赖 -->
+        <dependency>
+            <groupId>com.brightcomplete.cv</groupId>
+            <artifactId>cv-starter-cloud</artifactId>
+            <!-- 3.2版本号后，可选择是否排除cv-system-cloud-api，不排除会优先通过fegin调用接口
+            <exclusions>
+                <exclusion>
+                    <groupId>com.brightcomplete.cv</groupId>
+                    <artifactId>cv-system-cloud-api</artifactId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+        <!-- cv-system-biz依赖 -->
+        <dependency>
+            <groupId>com.brightcomplete.cv</groupId>
+            <artifactId>cv-system-biz</artifactId>
+            <!-- 排除demo模块，demo模块采用微服务独立启动 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.brightcomplete.cv</groupId>
+                    <artifactId>cv-demo</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+<!--&lt;!&ndash;        feign 熔断限流、分布式锁、xxljob示例 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.brightcomplete.cv</groupId>-->
+<!--            <artifactId>cv-cloud-test-more</artifactId>-->
+<!--            <version>${cv-spring.version}</version>-->
+<!--        </dependency>-->
+<!--&lt;!&ndash;        rabbitmq例子&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.brightcomplete.cv</groupId>-->
+<!--            <artifactId>cv-cloud-test-rabbitmq</artifactId>-->
+<!--            <version>${cv-spring.version}</version>-->
+<!--        </dependency>-->
+<!--&lt;!&ndash;        分布式事务例子&ndash;&gt;-->
+<!--       <dependency>-->
+<!--           <groupId>com.brightcomplete.cv</groupId>-->
+<!--           <artifactId>cv-cloud-test-seata</artifactId>-->
+<!--           <version>${cv-spring.version}</version>-->
+<!--       </dependency>-->
+<!--&lt;!&ndash;        分库分表例子&ndash;&gt;-->
+<!--       <dependency>-->
+<!--           <groupId>com.brightcomplete.cv</groupId>-->
+<!--           <artifactId>cv-cloud-test-shardingsphere</artifactId>-->
+<!--           <version>${cv-spring.version}</version>-->
+<!--       </dependency>-->
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

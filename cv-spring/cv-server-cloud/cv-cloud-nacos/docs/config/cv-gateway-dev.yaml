@@ -1,0 +1,14 @@
+brightcomplete:
+  route:
+    config:
+      #type:database nacos yml
+      data-type: nacos
+      group: DEFAULT_GROUP
+      data-id: cv-gateway-router
+spring:
+  redis:
+    database: 0
+#    host: cv-redis
+    host: 127.0.0.1
+    port: 6379
+    password: customer88

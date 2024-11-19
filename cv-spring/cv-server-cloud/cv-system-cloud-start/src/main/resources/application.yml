@@ -1,0 +1,16 @@
+server:
+  port: 7001
+  
+spring:
+  application:
+    name: cv-system
+  cloud:
+    nacos:
+      config:
+        server-addr: @config.server-addr@
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+  config:
+    import:
+      - optional:nacos:brightcomplete.yaml
+      - optional:nacos:brightcomplete-@profile.name@.yaml

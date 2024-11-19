@@ -1,0 +1,57 @@
+#map{
+    z-index: 1;
+}
+
+/*GP服务图例样式*/
+.Lenged_css{
+    z-index: 1000;
+    width: 120px;
+    opacity: 0.85;
+    border: 1px solid #C0C0C0;
+    border-radius: 5px;
+    background-color: white;
+
+}
+
+/*提示弹框样式*/
+.showalert {
+    height: 50px;
+    width:300px;
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 99999;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.showalert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.showalert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.showalert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.showalert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+/*提示弹框样式end*/

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brightcomplete.modules.system.mapper.SysAppDetailedMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.brightcomplete.modules.system.entity.SysAppDetailed" id="sysAppDetailedMap">
+        <result property="uuid" column="uuid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="creator" column="creator"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="creatorOrgId" column="creator_org_id"/>
+        <result property="modifierId" column="modifier_id"/>
+        <result property="modifier" column="modifier"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="listData" column="list_data"/>
+        <result property="formData" column="form_data"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid
+        ,  	  	     			 create_time
+		  ,  	  	     			 creator
+		  ,  	  	     			 creator_id
+		  ,  	  	     			 creator_org_id
+		  ,  	  	     			 modifier_id
+		  ,  	  	     			 modifier
+		  ,  	  	     			 modify_time
+		  ,  	  	     			 list_data
+		  ,  	  	     			 form_data
+		  ,  	  	     			 basics_uuid
+		  ,  	  	     			 search_data
+		  ,  	  	     			 code_view_data
+    </sql>
+    <update id="updateCodeViewDataByBasicsUuid">
+        update sys_app_detailed
+        set code_view_data =#{list}
+        where basics_uuid = #{uuid}
+    </update>
+
+    <select id="getPageSet" resultType="com.brightcomplete.modules.system.entity.SysAppDetailed">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_app_detailed
+        <where>
+
+            <if test="filterSort != null">
+                ${filterSort}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getDetailByBasicsUuid" resultType="com.brightcomplete.modules.system.entity.SysAppDetailed">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_app_detailed
+        where basics_uuid = #{basicsUuid}
+    </select>
+
+    <select id="scanPreview" resultType="java.util.Map">
+        select
+        *
+        from ${basicsTableSchema}.${basicsTableName}
+        <where>
+            <if test="filterSort != null">
+                ${filterSort}
+            </if>
+        </where>
+    </select>
+    <select id="scanPreviewGetDetailByUuid" resultType="java.util.Map">
+        select * from ${tableSchema}.${tableName}
+        where uuid = #{uuid}
+    </select>
+
+
+    <delete id="executeDeleteBatch">
+        delete from sys_app_detailed where uuid in
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+
+    <delete id="scanPreviewDeleteBatch">
+        delete from ${tableSchema}.${tableName} where uuid in
+        <foreach item="list" collection="list" open="(" separator="," close=")">
+            #{list}
+        </foreach>
+    </delete>
+
+    <insert id="executeInsertSql">
+        ${sql}
+    </insert>
+
+    <update id="executeUpdateSql">
+        ${sql}
+    </update>
+
+</mapper>

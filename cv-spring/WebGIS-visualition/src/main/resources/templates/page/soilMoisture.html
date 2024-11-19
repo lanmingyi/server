@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>土壤墒情数据可视化</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/template.css" media="all">
+    <link rel="stylesheet" href="/static/lib/leaflets/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/static/lib/map.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MiniMap/Control.MiniMap.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MousePosition/L.Control.MousePosition.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/EasyButton/easy-button.css">
+    <style>
+        #map {
+            height: calc(100vh - 180px);
+            width: 100%;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid layadmin-homepage-fluid">
+    <div class="layui-row layui-col-space8">
+        <div class="layui-col-md12">
+            <div class="layui-card layui-form" lay-filter="component-form-element">
+                <div class="layui-card-header">时间选择</div>
+                <div class="layui-card-body layui-row layui-col-space10">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">数据类型</label>
+                            <div class="layui-input-inline">
+                                <select name="type" lay-verify="required">
+                                    <option value="humidity">湿度</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">时间选择</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="test1" placeholder="请输入要查看的时间" name="date">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn" lay-submit lay-filter="zs">展示当前时间墒情</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div id="slideTest1" class="layui-col-md-offset1 layui-col-md10"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/lib/layuiadmin/layui/layui.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/esri-leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.ChineseTmsProviders.js"></script>
+<script src="/static/lib/leaflets/MiniMap/Control.MiniMap.js"></script>
+<script src="/static/lib/leaflets/MousePosition/L.Control.MousePosition.js"></script>
+<script src="/static/lib/leaflets/EasyButton/easy-button.js"></script>
+<script src="/static/lib/map.js"></script>
+<script th:inline="javascript">
+    var allGP = [[${allGP}]];
+
+    //获取全部年月
+    var dates = [];
+    for (var a = 2009, alen = 2018; a <= alen; a++) {
+        for (var b = 1, blen = 12; b <= blen; b++) {
+            dates.push({
+                date: a + '/' + b,
+                year: a,
+                month: b
+            });
+        }
+    }
+
+    layui.use(["layer", "form", "element", "laydate", "slider"], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var slider = layui.slider;
+
+        var gp_url = allGP[0].gpUrl;
+        var MapServer = allGP[0].gpMapServer;
+        var load;
+
+        var sliderObject = slider.render({
+            elem: '#slideTest1'  //绑定元素
+            , min: 0
+            , max: dates.length - 1
+            , setTips: function (value) { //自定义提示文本
+                return dates[value].date;
+            }
+            , change: function (v) {
+                laydate.render({
+                    elem: '#test1'
+                    , value: v
+                });
+            }
+        });
+
+        laydate.render({
+            elem: '#test1' //指定元素
+            , format: 'yyyy/MM'
+            , min: '2009-01-01'
+            , max: '2018-12-31'
+            , value: dates[0].date
+            , done: function (value, date, endDate) {
+                for (var i = 0, len = dates.length; i < len; i++) {
+                    var da = dates[i];
+                    // if (da.year == date.year && da.month == date.month) {
+                    //     sliderObject.setValue(i);
+                    //     return;
+                    // }
+                }
+            }
+        });
+
+        form.on('submit(zs)', function (obj) {
+            obj.field.date += '/01';
+            load = layer.open({
+                type: 3,
+                shade: 0.8
+            });
+            $.ajax({
+                type: "post",
+                url: "/soilMoisture/getIn",
+                dataType: 'json',
+                data: obj.field,
+                success: function (res) {
+                    data = JSON.stringify(res);
+                    var _data = "{\n" +
+                        "\t\"displayFieldName\": \"Num\",\n" +
+                        "\t\"fieldAliases\": {\n" +
+                        "\t\t\"Num\": \"Num\"\n" +
+                        "\t},\n" +
+                        "\t\"geometryType\": \"esriGeometryPoint\",\n" +
+                        "\t\"spatialReference\": {\n" +
+                        "\t\t\"wkid\": 4326,\n" +
+                        "\t\t\"latestWkid\": 4326\n" +
+                        "\t},\n" +
+                        "\t\"fields\": [{\n" +
+                        "\t\t\"name\": \"Num\",\n" +
+                        "\t\t\"type\": \"esriFieldTypeInteger\",\n" +
+                        "\t\t\"alias\": \"Num\"\n" +
+                        "\t}],\n" +
+                        "\t\"features\":" + data + "}";
+                    IDW(_data);
+                }
+            })
+        });
+
+
+        //开始调用IDW
+        function IDW(data) {
+            // console.log(data);
+            var featureSet = data;
+            var params = {
+                IDW_points: featureSet,
+                IDW_Zvalue: "Num"
+            };
+            submitJob_Wearther(params);
+        }
+
+        function submitJob_Wearther(params) {
+            $.when($.ajax({
+                type: 'POST',
+                cache: false,
+                url: gp_url + "/submitJob?f=json",
+                dataType: 'json',
+                async: true,
+                data: params,
+                success: function (re) {
+                    var jobId = re.jobId;
+                    if (jobId) {
+                        Getresult_Wearther(jobId);
+                    }
+                }
+            })).done(function () {
+
+            })
+        }
+
+        function Getresult_Wearther(jobId) {
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: gp_url + "/jobs/" + jobId + "?f=json",
+                async: true,
+                success: function (result) {
+                    result = eval("(" + result + ")");
+                    if (result.jobStatus === "esriJobSucceeded") {
+                        showResult_Wearther(jobId);
+                    } else {
+                        setTimeout(function () {
+                            Getresult_Wearther(jobId);
+                        }, 1000);
+
+                    }
+                }
+            });
+        }
+
+        var IDWServiceLayer = new Array();
+
+        function showResult_Wearther(jobId) {
+            var mapurl = MapServer + "/jobs/" + jobId;
+            var envLayer = new L.esri.dynamicMapLayer({
+                url: mapurl,
+                opacity: 0.6,
+                useCors: false
+            }).addTo(map);
+            if (IDWServiceLayer.length > 0) {
+                map.removeLayer(IDWServiceLayer[0]);
+                IDWServiceLayer.length = 0;
+            }
+            IDWServiceLayer.push(envLayer);
+            layer.close(load);
+            Legend(mapurl);
+        }
+    })
+</script>
+</body>
+</html>

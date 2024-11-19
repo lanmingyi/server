@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/template.css">
+    <style>
+        .layui-timeline-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .info {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <blockquote class="layui-elem-quote"><h1>农业数据可视化与决策系统</h1></blockquote>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12 layui-carousel" id="round">
+            <div carousel-item>
+                <div><img src="/static/img/two.jpg" style="width:100%;height: 500px;"></div>
+                <div><img src="/static/img/one.jpg" style="width:100%;height: 500px;"></div>
+                <div><img src="/static/img/bg.jpg" style="width:100%;height: 500px;"></div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layadmin-homepage-panel layadmin-homepage-shadow">
+
+                <p class="layadmin-homepage-about">
+                    系统介绍
+                </p>
+                <ul class="layadmin-homepage-list-group">
+                    <li class="list-group-item"><i class="layui-icon layui-icon-location"></i>基于WebGIS的农业数据可视化与决策系统设计与开发
+                    </li>
+                </ul>
+                <div class="layadmin-homepage-pad-hor">
+                    <mdall>
+                        随着我国农业信息化进程的有效推进，农业领域积累了大量的统计数据。
+                        利用数据可视化技术可以将现有的数据转化为可识别的图形符号、图像等信息，将不可见或难以直观显示的数据展现出来，方便人们洞察事物潜在规律。
+                        基于已有的科学种植理论，采用Leaflet前台框架结合WebGIS、JavaWeb和数据库等技术，对安徽省当涂地区进行了基于B/S架构的可视化与决策系统建设。
+                        可视化系统实现了对当涂基础地理数据的展示，如行政规划展示、种植结构展示、土壤养分分布展示、土壤墒情展示和国家农业土地红线展示，直观的了解当涂农业种植的基本情况和土地土壤现状等信息。决策系统提供了测土配方施肥地图展示、配方卡在线生成、农业遥感苗情监测、选址规划支持决策分析和产量估测服务等。
+                    </mdall>
+                </div>
+                <p class="layadmin-homepage-about">
+                    关键词
+                </p>
+                <ul class="layadmin-homepage-list-inline">
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">当涂</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">可视化</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">决策系统</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">WebGIS</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">JavaWeb</a>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-col-md8">
+            <div class="layui-card">
+                <div class="layui-card-header">农业要闻</div>
+                <div class="layui-card-body">
+
+                    <ul class="layui-timeline">
+                        <li class="layui-timeline-item" th:each="item:${tb_news}"
+                            th:onclick="info([[${item.url}]],[[${item.title}]])"
+                            style="cursor:pointer;">
+                            <i class="layui-icon layui-timeline-axis"></i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title" th:text="${item.title}"></h3>
+                                <p th:text="${item.date}"></p>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-anim layui-anim-rotate layui-anim-loop layui-timeline-axis"></i>
+                            <div class="layui-timeline-content layui-text">
+                                <div class="layui-timeline-title">更多信息</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="info" style="display: none;width: 100%;height: 100%">
+
+        </div>
+    </div>
+</div>
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/lib/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.use(["carousel", "table", "layer"], function () {
+        var carousel = layui.carousel;
+        var layer = layui.layer;
+        var table = layer.table;
+
+        //建造实例
+        carousel.render({
+            elem: '#round'
+            , width: '100%' //设置容器宽度
+            , height: '500px'
+            , arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+            , interval: 5000
+        });
+
+    })
+
+</script>
+<script src="/static/lib/layuiadmin/layui/lay/modules/layer.js"></script>
+<script>
+
+    function info(data, title) {
+        layui.use('layer', function (layer) {
+            var layer = layui.layer;
+            layer.open({
+                type: 2,
+                title: title,
+                shade: false,
+                maxmin: true,
+                area: ['90%', '90%'],
+                content: data
+            })
+        })
+    }
+
+</script>
+</body>
+</html>

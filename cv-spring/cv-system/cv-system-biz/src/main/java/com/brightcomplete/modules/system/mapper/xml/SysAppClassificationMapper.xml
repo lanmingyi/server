@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brightcomplete.modules.system.mapper.SysAppClassificationMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.brightcomplete.modules.system.entity.SysAppClassification" id="SysAppClassification">
+        <result property="uuid" column="uuid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="creator" column="creator"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="creatorOrgId" column="creator_org_id"/>
+        <result property="modifierId" column="modifier_id"/>
+        <result property="modifier" column="modifier"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="classificationName" column="classification_name"/>
+        <result property="classificationCode" column="classification_code"/>
+        <result property="classificationSort" column="classification_sort"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        uuid
+        ,  	  	     			 create_time
+		  ,  	  	     			 creator
+		  ,  	  	     			 creator_id
+		  ,  	  	     			 creator_org_id
+		  ,  	  	     			 modifier_id
+		  ,  	  	     			 modifier
+		  ,  	  	     			 modify_time
+		  ,  	  	     			 classification_name
+		  ,  	  	     			 classification_code
+		  ,  	  	     			 classification_sort
+    </sql>
+
+    <select id="getPageSet" resultType="com.brightcomplete.modules.system.entity.SysAppClassification">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_app_classification
+        <where>
+
+            <if test="filterSort != null">
+                ${filterSort}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="executeDeleteBatch">
+        delete from sys_app_classification where uuid in
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+
+</mapper>

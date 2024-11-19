@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="icon" type="image/x-icon" href="/static/img/logo.png">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/login.css" media="all">
+</head>
+<body>
+
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+    <div class="layadmin-user-login-main">
+        <div class="layadmin-user-login-box layadmin-user-login-header">
+            <h2>用户注册</h2>
+            <p>可视化系统</p>
+        </div>
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-username"
+                       for="LAY-user-login-nickname"></label>
+                <input type="text" name="username" id="LAY-user-login-nickname" lay-verify="username" placeholder="用戶名"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-password"
+                       for="LAY-user-login-password"></label>
+                <input type="password" name="password" id="LAY-user-login-password" lay-verify="pass" placeholder="密码"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-password"
+                       for="LAY-user-login-repass"></label>
+                <input type="password" name="repass" id="LAY-user-login-repass" lay-verify="required" placeholder="确认密码"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-cellphone"
+                       for="LAY-user-login-cellphone"></label>
+                <input type="text" name="cellphone" id="LAY-user-login-cellphone" lay-verify="phone" placeholder="手机"
+                       class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <input type="checkbox" name="agreement" lay-skin="primary" title="同意用户协议" checked>
+            </div>
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-reg-submit">注 册</button>
+            </div>
+            <div class="layui-trans layui-form-item layadmin-user-login-other">
+                <label>社交账号注册</label>
+                <a href="javascript:;" class="other"><i class="layui-icon layui-icon-login-qq"></i></a>
+                <a href="javascript:;" class="other"><i class="layui-icon layui-icon-login-wechat"></i></a>
+                <a href="javascript:;" class="other"><i class="layui-icon layui-icon-login-weibo"></i></a>
+
+                <a href="/system/login" class="layadmin-user-jump-change layadmin-link layui-hide-xs">用已有帐号登入</a>
+                <a href="/system/login"
+                   class="layadmin-user-jump-change layadmin-link layui-hide-sm layui-show-xs-inline-block">登入</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-trans layadmin-user-login-footer">
+        <p>© 2018-2020 <a href="https://www.weixiuyizhan.com/weixiu" target="_blank">维修驿站 weixiuyizhan.com</a></p>
+    </div>
+
+</div>
+
+
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/lib/layuiadmin/layui/layui.js"></script>
+<script>
+    var num;
+    layui.config({
+        base: '/static/lib/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'user'], function () {
+        var $ = layui.$
+            , setter = layui.setter
+            , admin = layui.admin
+            , form = layui.form
+            , router = layui.router();
+
+        form.render();
+
+        $(function () {
+            var tips;
+            $(".other").click(function () {
+                var that = this;
+                tips = layer.tips("功能内测中!", that, {
+                    tips: [1, '#292929'],
+                    time: 1000
+                })
+            });
+        });
+
+        //提交
+        form.on('submit(LAY-user-reg-submit)', function (obj) {
+            var field = obj.field;
+            //确认密码
+            if (field.password !== field.repass) {
+                return layer.msg('两次密码输入不一致');
+            }
+
+            //是否同意用户协议
+            if (!field.agreement) {
+                return layer.msg('你必须同意用户协议才能注册');
+            }
+
+            //请求接口
+            $.ajax({
+                type: 'post',
+                url: '/user/register',
+                data: {
+                    username: obj.field.username,
+                    password: obj.field.password,
+                    phone: obj.field.cellphone,
+                    authority:"97e3dc02-709a-11e9-a923-1681be663d3e"
+                },
+                success: function (res) {
+                    if (res.code == 0) {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            , icon: 1
+                            , time: 1000
+                        }, function () {
+                            window.location.href = '/system/login'; //跳转到登入页
+                        });
+                    }else {
+                        layer.msg(res.msg, {
+                            offset: '15px'
+                            , icon: 2
+                            , time: 1000
+                        }, function () {
+                        });
+                    }
+
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

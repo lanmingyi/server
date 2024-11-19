@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.brightcomplete.modules.system.mapper.SysAppBasicsMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.brightcomplete.modules.system.entity.SysAppBasics" id="sysAppBasicsMap">
+        <result property="uuid" column="uuid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="creator" column="creator"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="creatorOrgId" column="creator_org_id"/>
+        <result property="modifierId" column="modifier_id"/>
+        <result property="modifier" column="modifier"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="basicsName" column="basics_name"/>
+        <result property="basicsRemake" column="basics_remake"/>
+        <result property="basicsCode" column="basics_code"/>
+        <result property="classificationCode" column="classification_code"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        uuid
+        ,  	  	     			 create_time
+		  ,  	  	     			 creator
+		  ,  	  	     			 creator_id
+		  ,  	  	     			 creator_org_id
+		  ,  	  	     			 modifier_id
+		  ,  	  	     			 modifier
+		  ,  	  	     			 modify_time
+		  ,  	  	     			 basics_name
+		  ,  	  	     			 basics_remake
+		  ,  	  	     			 basics_table_name
+		  ,  	  	     			 basics_table_schema
+		  ,  	  	     			 classification_code
+    </sql>
+
+    <select id="getPageSet" resultType="com.brightcomplete.modules.system.entity.SysAppBasics">
+        select
+        <include refid="Base_Column_List"></include>
+        from sys_app_basics
+        <where>
+            <if test=" classificationCode != null and  classificationCode!=''">
+                classification_code like concat('%',#{classificationCode},'%') and
+            </if>
+            <if test=" basicsTableName != null and  basicsTableName!=''">
+                basics_table_name like concat('%',#{basicsTableName},'%') and
+            </if>
+            <if test="filterSort != null">
+                ${filterSort}
+            </if>
+        </where>
+    </select>
+
+    <select id="getColumDetail" resultType="com.brightcomplete.modules.system.vo.TaleDetailVo">
+        SELECT
+            TABLE_SCHEMA AS tableSchema,
+            `TABLE_NAME` AS tableName,
+            `COLUMN_NAME` AS columnName,
+            ORDINAL_POSITION AS ordinalPosition,
+            COLUMN_DEFAULT AS columnDefault,
+            IS_NULLABLE AS isNullable,
+            DATA_TYPE AS dataType,
+            CHARACTER_MAXIMUM_LENGTH AS characterMaximumLength,
+            NUMERIC_PRECISION AS numericPrecision,
+            NUMERIC_SCALE AS numericScale,
+            COLUMN_TYPE AS columnType,
+            COLUMN_KEY AS columnKey,
+            EXTRA AS extar,
+            COLUMN_COMMENT AS columnComment
+        FROM
+            information_schema.`COLUMNS`
+        WHERE
+                TABLE_SCHEMA =  (
+                SELECT DATABASE
+                           ()) and TABLE_NAME = #{tableName}
+        ORDER BY
+            TABLE_NAME,
+            ORDINAL_POSITION
+    </select>
+
+    <select id="getTaleDetail" resultType="com.brightcomplete.modules.system.vo.TaleDetailVo">
+        SELECT
+            `table_name` tableName,
+            ENGINE engine,
+            table_comment tableComment,
+            create_time createTime
+        FROM
+            information_schema.TABLES
+        WHERE
+                table_schema = (
+                SELECT DATABASE
+                           ())
+          AND table_name = #{tableName}
+
+    </select>
+    <select id="getColumnName" resultType="com.brightcomplete.modules.system.vo.TaleDetailVo">
+        SELECT
+            TABLE_SCHEMA AS tableSchema,
+            `TABLE_NAME` AS tableName,
+            `COLUMN_NAME` AS columnName,
+            ORDINAL_POSITION AS ordinalPosition,
+            COLUMN_DEFAULT AS columnDefault,
+            IS_NULLABLE AS isNullable,
+            DATA_TYPE AS dataType,
+            CHARACTER_MAXIMUM_LENGTH AS characterMaximumLength,
+            NUMERIC_PRECISION AS numericPrecision,
+            NUMERIC_SCALE AS numericScale,
+            COLUMN_TYPE AS columnType,
+            COLUMN_KEY AS columnKey,
+            EXTRA AS extar,
+            COLUMN_COMMENT AS columnComment
+
+        FROM
+            information_schema.`COLUMNS`
+        WHERE
+            TABLE_SCHEMA = #{basicsTableSchema} and TABLE_NAME = #{basicsTableName}
+        ORDER BY
+            TABLE_NAME,
+            ORDINAL_POSITION
+    </select>
+
+    <delete id="executeDeleteBatch">
+        delete from sys_app_basics where uuid in
+        <foreach item="uuid" collection="array" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
+    </delete>
+    <delete id="executeDeleteBatchByBasicsUuid">
+        delete from sys_app_detailed where basics_uuid in
+        <foreach item="basicsUuid" collection="array" open="(" separator="," close=")">
+            #{basicsUuid}
+        </foreach>
+    </delete>
+
+</mapper>

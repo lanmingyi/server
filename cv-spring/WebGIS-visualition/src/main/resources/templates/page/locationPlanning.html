@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>选址规划支持决策</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="/static/lib/layuiadmin/style/template.css" media="all">
+    <link rel="stylesheet" href="/static/lib/leaflets/leaflet/leaflet.css">
+    <link rel="stylesheet" href="/static/lib/map.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MiniMap/Control.MiniMap.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/MousePosition/L.Control.MousePosition.css">
+    <link rel="stylesheet" href="/static/lib/leaflets/EasyButton/easy-button.css">
+    <style>
+        #map {
+            height: calc(100vh - 80px);
+            width: 100%;
+            z-index: 1;
+        }
+
+        .layui-form-label {
+            width: 90px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space8">
+        <div class="layui-col-md8">
+            <div id="map">
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <h3>选址规划</h3>
+                </div>
+                <div class="layui-card-body">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">省道辐射范围</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="sdfsfw" required lay-verify="required|number"
+                                           placeholder="100～700"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">米</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">县道辐射范围</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="xdfsfw" required lay-verify="required|number"
+                                           placeholder="100～700"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">米</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">河流辐射范围</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="hlfsfw" required lay-verify="required|number"
+                                           placeholder="100～700"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">米</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="submit">立即分析</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/lib/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/lib/layuiadmin/layui/layui.js"></script>
+<script src="/static/lib/vue/vue.min.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/esri-leaflet.js"></script>
+<script src="/static/lib/leaflets/leaflet/leaflet.ChineseTmsProviders.js"></script>
+<script src="/static/lib/leaflets/MiniMap/Control.MiniMap.js"></script>
+<script src="/static/lib/leaflets/MousePosition/L.Control.MousePosition.js"></script>
+<script src="/static/lib/leaflets/EasyButton/easy-button.js"></script>
+<script src="/static/lib/map.js"></script>
+<script th:inline="javascript">
+    var allGP = [[${allGP}]];
+    layui.use(["layer", "form"], function () {
+        var layer = layui.layer;
+        var form = layui.form;
+
+        //GP服务地址
+        var GP_URL = allGP[0].gpUrl;
+        var GP_mapserver = allGP[0].gpMapServer;
+        var map_array = [];
+        var load;
+
+
+        form.on('submit(submit)', function (obj) {
+            load = layer.load(2, {shade: [0.8, "#393D49"]});
+            //三秒后响应
+            setTimeout(function () {
+                //计算，赋值
+                cleanPolygon();
+                var data = [];
+                data.a = obj.field.hlfsfw;
+                data.b = obj.field.xdfsfw;
+                data.c = obj.field.xdfsfw;
+
+                var params = {
+                    river_range: '{"distance": ' + data.a + ', "units": "esriMeters"}', //Points是GP的输入参数名称，要和GP服务一致
+                    county_highway_range: '{"distance": ' + data.b + ', "units": "esriMeters"}',//插值的字段，名称要和GP一致
+                    provincial_highway_range: '{"distance": ' + data.c + ', "units": "esriMeters"}'
+                };
+                submitJob(params);
+            }, 3000);
+
+            return false;
+        });
+
+        //GP服务调用
+        //submitJob异步
+        //execute同步
+        function submitJob(data) {
+            $.ajax({
+                type: 'POST',
+                cache: false,
+                url: GP_URL + '/submitJob?f=json',//异步请求的样式
+                dataType: 'json',
+                async: true,
+                data: data,
+                success: function (result) {
+                    var jobId = result.jobId;
+                    if (jobId) {//jobId是ArcGIS给添加上去的工作编号，每次向服务器发送请求的时候就会生成
+                        Getresult(jobId);//获取结果
+                    }
+                }
+            });
+        }
+
+        //获取结果
+        function Getresult(jobId) {//将jobId传入方法
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: GP_URL + "/jobs/" + jobId + "?f=json",//判断是否生成结果
+                async: true,
+                success: function (result) {
+                    result = eval("(" + result + ")");
+                    if (result.jobStatus === "esriJobSucceeded") {//如果发送请求后的返回值的状态为esriJobSucceeded，说明已经完成操作并生成了结果
+                        showResult(jobId);//展示结果
+                    } else {
+                        //延迟执行方法
+                        // $('.showalert').html('获取数据成功,执行地图插值！').addClass('showalert-success').show().delay(2000).fadeOut();
+                        setTimeout(function () {
+                            Getresult(jobId);
+                        }, 1000);
+                    }
+                }
+            });
+        }
+
+        //展示地图结果
+        function showResult(jobId) {
+
+            var mapurl = GP_mapserver + "/jobs/" + jobId;//这里是结果所放置的位置
+            map_array.push(new L.esri.dynamicMapLayer({
+                url: mapurl,
+                opacity: 0.85
+            }).addTo(map));//新建动态图层
+            Legend(mapurl, '符合的范围');//加载图例
+            layer.closeAll();
+            layer.msg('计算成功', {icon: 1});
+        }
+
+
+        function clean_border() {
+            for (var i = 0; i < map_array.length; i++) {
+                map_array[i].remove();
+            }
+        }
+
+        function cleanPolygon() {
+            clean_border();
+            if ($(".legend_div") != null) {
+                $(".legend_div").remove()
+            }
+        }
+
+    })
+</script>
+</body>
+</html>
