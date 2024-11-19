@@ -1,5 +1,18 @@
 package com.bright.system.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -20,23 +33,11 @@ import com.bright.system.service.SysDepartService;
 import com.bright.system.service.SysDictService;
 import com.bright.system.service.SysUserService;
 import com.bright.system.util.RandImageUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/sys")
-@Api(tags="用户登录")
+@Api(tags = "用户登录")
 @Slf4j
 public class LoginController {
 
@@ -55,7 +56,7 @@ public class LoginController {
 
     @ApiOperation("登录接口")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Result<JSONObject> login(@RequestBody SysLoginModel sysLoginModel){
+    public Result<JSONObject> login(@RequestBody SysLoginModel sysLoginModel) {
         Result<JSONObject> result = new Result<JSONObject>();
         String username = sysLoginModel.getUsername();
         String password = sysLoginModel.getPassword();
@@ -65,15 +66,15 @@ public class LoginController {
 
         // 校验验证码
         String captcha = sysLoginModel.getCaptcha();
-        if(captcha==null){
+        if (captcha == null) {
             result.error500("验证码无效");
             return result;
         }
         String lowerCaseCaptcha = captcha.toLowerCase();
-        String realKey = Md5Util.md5Encode(lowerCaseCaptcha+sysLoginModel.getCheckKey(), "utf-8");
+        String realKey = Md5Util.md5Encode(lowerCaseCaptcha + sysLoginModel.getCheckKey(), "utf-8");
         Object checkCode = redisUtil.get(realKey);
         // 当进入登录页时，有一定几率出现验证码错误 #1714
-        if(checkCode==null || !checkCode.toString().equals(lowerCaseCaptcha)) {
+        if (checkCode == null || !checkCode.toString().equals(lowerCaseCaptcha)) {
             log.warn("验证码错误，key= {} , Ui checkCode= {}, Redis checkCode = {}", sysLoginModel.getCheckKey(), lowerCaseCaptcha, checkCode);
             result.error500("验证码错误");
             // 改成特殊的code 便于前端判断
@@ -84,10 +85,10 @@ public class LoginController {
         // 1. 校验用户是否有效
         // 登录代码验证用户是否注销bug，if条件永远为false
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SysUser::getUsername,username);
+        queryWrapper.eq(SysUser::getUsername, username);
         SysUser sysUser = sysUserService.getOne(queryWrapper);
         result = sysUserService.checkUserIsEffective(sysUser);
-        if(!result.isSuccess()) {
+        if (!result.isSuccess()) {
             return result;
         }
 
@@ -106,7 +107,7 @@ public class LoginController {
         // 登录成功，删除redis中的验证码
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(sysUser, loginUser);
-        baseCommonService.addLog("用户名: " + username + ",登录成功！", CommonConstant.LOG_TYPE_1, null,loginUser);
+        baseCommonService.addLog("用户名: " + username + ",登录成功！", CommonConstant.LOG_TYPE_1, null, loginUser);
         return result;
     }
 
@@ -160,7 +161,7 @@ public class LoginController {
             // 查询当前是否有登录部门
             // 如果用戶为选择部门，数据库为存在上一次登录部门，则取一条存进去
             SysUser sysUserById = sysUserService.getById(sysUser.getId());
-            if(ConvertUtils.isEmpty(sysUserById.getOrgCode())){
+            if (ConvertUtils.isEmpty(sysUserById.getOrgCode())) {
                 sysUserService.updateUserDepart(username, departs.get(0).getOrgCode());
             }
             obj.put("multi_depart", 2);
@@ -170,18 +171,18 @@ public class LoginController {
         result.success("登录成功");
         return result;
     }
-    
+
     @ApiOperation("获取验证码")
     @GetMapping("/randomImage/{key}")
-    public Result<String> randomImage(HttpServletResponse response, @PathVariable("key") String key){
+    public Result<String> randomImage(HttpServletResponse response, @PathVariable("key") String key) {
         Result<String> res = new Result<String>();
-        try{
+        try {
             // 生成验证码
-            String code = RandomUtil.randomString(BASE_CHECK_CODES,4);
+            String code = RandomUtil.randomString(BASE_CHECK_CODES, 4);
 
             // 存储到redis中
             String lowerCaseCode = code.toLowerCase();
-            String realKey = Md5Util.md5Encode(lowerCaseCode+key, "utf-8");
+            String realKey = Md5Util.md5Encode(lowerCaseCode + key, "utf-8");
             log.info("获取验证码，Redis checkCode = {}，key = {}", code, key);
             redisUtil.set(realKey, lowerCaseCode, 60);
 
@@ -190,7 +191,7 @@ public class LoginController {
             res.setSuccess(true);
             res.setResult(base64);
         } catch (Exception e) {
-            res.error500("获取验证码出错"+e.getMessage());
+            res.error500("获取验证码出错" + e.getMessage());
             e.printStackTrace();
         }
         return res;
@@ -198,6 +199,7 @@ public class LoginController {
 
     /**
      * app登录
+     *
      * @param sysLoginModel
      * @return
      * @throws Exception
@@ -211,7 +213,7 @@ public class LoginController {
         //1. 校验用户是否有效
         SysUser sysUser = sysUserService.getUserByName(username);
         result = sysUserService.checkUserIsEffective(sysUser);
-        if(!result.isSuccess()) {
+        if (!result.isSuccess()) {
             return result;
         }
 
@@ -224,14 +226,14 @@ public class LoginController {
         }
 
         String orgCode = sysUser.getOrgCode();
-        if(ConvertUtils.isEmpty(orgCode)) {
+        if (ConvertUtils.isEmpty(orgCode)) {
             //如果当前用户无选择部门 查看部门关联信息
             List<SysDepart> departs = sysDepartService.queryUserDeparts(sysUser.getId());
             // 新建用户，没有设置部门及角色，点击登录提示暂未归属部，一直在登录页面 使用手机号登录 可正常
             if (departs == null || departs.size() == 0) {
 				/*result.error500("用户暂未归属部门,不可登录!");
 				return result;*/
-            }else{
+            } else {
                 orgCode = departs.get(0).getOrgCode();
                 sysUser.setOrgCode(orgCode);
                 this.sysUserService.updateUserDepart(username, orgCode);
@@ -245,7 +247,7 @@ public class LoginController {
         String token = JwtUtil.sign(username, syspassword);
         // 设置超时时间
         redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, token);
-        redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME*2 / 1000);
+        redisUtil.expire(CommonConstant.PREFIX_USER_TOKEN + token, JwtUtil.EXPIRE_TIME * 2 / 1000);
 
         //token 信息
         obj.put("token", token);

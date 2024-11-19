@@ -156,9 +156,9 @@ bright:
   uploadType: local
   path:
     #文件上传根目录 设置
-    upload: /usr/server/upload
+    upload: /software/server/upload
     #webapp文件路径
-    webapp: /usr/server/webapp
+    webapp: /software/server/webapp
   #阿里云oss存储和大鱼短信秘钥配置
   oss:
     accessKey: ??
