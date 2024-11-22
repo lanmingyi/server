@@ -17,11 +17,10 @@ public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 成功标志
+     * 返回代码,200表示成功
      */
-    @ApiModelProperty(value = "成功标志")
-    private boolean success = true;
-
+    @ApiModelProperty(value = "返回代码")
+    private Integer code = 200;
     /**
      * 返回处理消息
      */
@@ -29,10 +28,17 @@ public class Result<T> implements Serializable {
     private String message = "";
 
     /**
-     * 返回代码
+     * 返回数据对象 data
      */
-    @ApiModelProperty(value = "返回代码")
-    private Integer code = 200;
+    @ApiModelProperty(value = "返回数据对象")
+    private T data;
+
+    /**
+     * 成功标志
+     */
+    @ApiModelProperty(value = "成功标志")
+    private boolean success = true;
+
 
     /**
      * 返回数据对象 data
@@ -79,6 +85,7 @@ public class Result<T> implements Serializable {
         r.setCode(CommonConstant.SC_OK_200);
         //Result OK(String msg)方法会造成兼容性问题
         r.setResult((T) msg);
+        r.setData((T) msg);
         r.setMessage(msg);
         return r;
     }
@@ -88,6 +95,7 @@ public class Result<T> implements Serializable {
         r.setSuccess(true);
         r.setCode(CommonConstant.SC_OK_200);
         r.setResult(data);
+        r.setData(data);
         return r;
     }
 
@@ -112,6 +120,7 @@ public class Result<T> implements Serializable {
         r.setMessage(msg);
         //Result OK(String msg)方法会造成兼容性问题
         r.setResult((T) msg);
+        r.setData((T) msg);
         return r;
     }
 
@@ -120,6 +129,7 @@ public class Result<T> implements Serializable {
         r.setSuccess(true);
         r.setCode(CommonConstant.SC_OK_200);
         r.setResult(data);
+        r.setData(data);
         return r;
     }
 
@@ -129,6 +139,7 @@ public class Result<T> implements Serializable {
         r.setCode(CommonConstant.SC_OK_200);
         r.setMessage(msg);
         r.setResult(data);
+        r.setData(data);
         return r;
     }
 
@@ -138,6 +149,7 @@ public class Result<T> implements Serializable {
         r.setCode(CommonConstant.SC_INTERNAL_SERVER_ERROR_500);
         r.setMessage(msg);
         r.setResult(data);
+        r.setData(data);
         return r;
     }
 

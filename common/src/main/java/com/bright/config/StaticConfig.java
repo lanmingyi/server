@@ -25,13 +25,13 @@ public class StaticConfig {
 //     */
 //    @Value(value = "${bright.signatureSecret}")
 //    private String signatureSecret;
-
-
-    /*@Bean
-    public void initStatic() {
-       DySmsHelper.setAccessKeyId(accessKeyId);
-       DySmsHelper.setAccessKeySecret(accessKeySecret);
-       EmailSendMsgHandle.setEmailFrom(emailFrom);
-    }*/
+//
+//
+//    @Bean
+//    public void initStatic() {
+//       DySmsHelper.setAccessKeyId(accessKeyId);
+//       DySmsHelper.setAccessKeySecret(accessKeySecret);
+//       EmailSendMsgHandle.setEmailFrom(emailFrom);
+//    }
 
 }
