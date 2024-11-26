@@ -11,7 +11,7 @@
  Target Server Version : 50735 (5.7.35)
  File Encoding         : 65001
 
- Date: 26/11/2024 20:38:49
+ Date: 26/11/2024 21:39:56
 */
 
 SET NAMES utf8mb4;
@@ -319,6 +319,10 @@ INSERT INTO `sys_log` VALUES ('1856614891918479361', 1, '用户名: admin,登录
 INSERT INTO `sys_log` VALUES ('1856636613434560513', 2, '修改角色ID: f6817f48af4fb3af11b9e8bf182f618b 的权限配置，操作人： admin', 2, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-13 17:53:58', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1858780138588659713', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-19 15:51:34', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1858811371234320385', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-19 17:55:41', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1861389246741381121', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-26 20:39:14', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1861389522038718466', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-26 20:40:20', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1861389686182805505', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-26 20:40:59', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1861395549991763970', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-26 21:04:17', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -2760,7 +2764,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('e9ca23d68d884d4ebb19d07889727dae', 'admin', '兰明易', 'cb362cfeefbf3d8d', 'RCGTeGiH', 'temp/account_gray_48dp_1661579636680.png', '2022-09-01 00:00:00', 1, '1972399206@qq.com', '15552435237', 'A01A06', 1, 0, NULL, NULL, 1, '00001', '总工程师', NULL, NULL, '2019-06-21 17:54:10', 'admin', '2023-01-30 16:18:19', 2, 'b93212e813234c23a2c8745587def638', NULL);
+INSERT INTO `sys_user` VALUES ('e9ca23d68d884d4ebb19d07889727dae', 'admin', '兰明易', 'cb362cfeefbf3d8d', 'RCGTeGiH', '/static/img/icon/account.png', '2022-09-01 00:00:00', 1, '1972399206@qq.com', '15552435237', 'A01A06', 1, 0, NULL, NULL, 1, '00001', '总工程师', NULL, NULL, '2019-06-21 17:54:10', 'admin', '2023-01-30 16:18:19', 2, 'b93212e813234c23a2c8745587def638', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user_depart
