@@ -363,7 +363,8 @@ public class LoginController {
         String smscode = jsonObject.getString("captcha");
         Object code = redisUtil.get(phone);
         if (!smscode.equals(code)) {
-            result.setMessage("手机验证码错误");
+//            result.setMessage("手机验证码错误");
+            result.error500("手机验证码错误");
             return result;
         }
         // 用户信息
