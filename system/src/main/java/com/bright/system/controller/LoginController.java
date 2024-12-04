@@ -3,12 +3,17 @@ package com.bright.system.controller;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.HashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import com.bright.system.vo.OtherTab;
+import com.bright.system.util.compare.compareUtils;
+import io.netty.util.internal.StringUtil;
 import com.bright.common.util.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
@@ -373,5 +378,77 @@ public class LoginController {
         baseCommonService.addLog("用户名: " + sysUser.getUsername() + ",登录成功！", CommonConstant.LOG_TYPE_1, null);
 
         return result;
+    }
+
+
+    //版本号 appVersion > app传过来的版本号则更新
+//    @Value("${app.appVersion}")
+    @Value("${bright.app.appVersion}")
+    private String appVersion;
+
+    // 1：整包更新 2 热更新
+    @Value("${bright.app.appUpdataType}")
+    private String appUpdataType;
+
+    //  wgt、apk 下载地址
+    @Value("${bright.app.appUpdateDownloadUrl}")
+    private String appUpdateDownloadUrl;
+
+    //版本更新内容
+    @Value("${bright.app.note}")
+    private String note;
+
+    //https://ask.dcloud.net.cn/article/35667
+
+    /**
+     * @MethodName updateApp APP热更新、整包更新 查看当前的
+     * @Description TODO
+     * @Param version   版本
+     * @Param name  名称
+     * @Return java.lang.Object
+     * @Author lmy
+     * @Date 2024-12-04 15:06
+     */
+    @ApiOperation(value = "APP更新")
+    @GetMapping("/updateApp")
+    @ResponseBody
+    public Object updateApp(String version, String name) {
+        HashMap var3 = new HashMap();
+        if (StringUtil.isNullOrEmpty(version)) {
+            var3.put("note", "version不能为空");
+            var3.put("update", false);
+            var3.put("statusCode", 300);
+            return var3;
+        }
+
+        //开启自动配置
+//        Object other = sysConfigurationController.getSysConfigurationDetailByType("other");
+//        if (((OtherTab) other).getState()) {
+//            Object object = sysConfigurationController.getSysConfigurationDetailByType("app");
+//            AppTab appTab = (AppTab) object;
+//            appVersion = appTab.getAppVersion();
+//            appUpdataType = appTab.getAppUpdataType();
+//            appUpdateDownloadUrl = appTab.getAppUpdateDownloadUrl();
+//            note = appTab.getNote();
+//        }
+
+        //比较版本号
+        Integer it = compareUtils.compareVersion(appVersion, version);  //第一个参数大返回正数，第二个参数大返回负数，一样返回0；
+        if (it > 0) {
+            var3.put("update", true);
+            var3.put("note", note); //更新描述
+            if ("1".equals(appUpdataType)) {
+                var3.put("pkgUrl", appUpdateDownloadUrl); //更新包下载地址
+            }
+            if ("2".equals(appUpdataType)) {
+                var3.put("wgtUrl", appUpdateDownloadUrl); //更新包下载地址
+            }
+            var3.put("statusCode", 200);
+        } else {
+            var3.put("note", "配置的版本号小于APP传过来的版本号，无需更新"); //更新描述
+            var3.put("update", false);
+            var3.put("statusCode", 300);
+        }
+        return var3;
     }
 }

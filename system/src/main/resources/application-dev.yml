@@ -167,6 +167,12 @@ bright:
     endpoint: oss-cn-beijing.aliyuncs.com
     bucketName: server
 
+  app:
+    appVersion: 1.0.0
+    appUpdataType: 2 # 1：整包更新 2 热更新
+    appUpdateDownloadUrl: "http://192.168.31.33:8080/wgt.apk"
+    note: "更新"
+
 #swagger
 knife4j:
   #开启增强配置
