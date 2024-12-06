@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiImplicitParam;
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -35,7 +36,10 @@ import com.bright.system.model.SysLoginModel;
 import com.bright.system.service.SysDepartService;
 import com.bright.system.service.SysDictService;
 import com.bright.system.service.SysUserService;
+import com.bright.system.service.AuthAccessViewService;
+//import com.bright.system.service.*;
 import com.bright.system.util.RandImageUtil;
+import com.bright.system.vo.AppMenuVo;
 
 
 @RestController
@@ -54,6 +58,9 @@ public class LoginController {
     private SysDictService sysDictService;
     @Resource
     private BaseCommonService baseCommonService;
+
+    @Autowired
+    private AuthAccessViewService authAccessViewService;
 
     private final String BASE_CHECK_CODES = "qwertyuiplkjhgfdsazxcvbnmQWERTYUPLKJHGFDSAZXCVBNM1234567890";
 
@@ -273,9 +280,9 @@ public class LoginController {
         Result<String> result = new Result<String>();
         String mobile = jsonObject.get("mobile").toString();
         //手机号模式 登录模式: "2"  注册模式: "1"
-        String smsmode=jsonObject.get("smsmode").toString();
+        String smsmode = jsonObject.get("smsmode").toString();
         log.info(mobile);
-        if(ConvertUtils.isEmpty(mobile)){
+        if (ConvertUtils.isEmpty(mobile)) {
             result.setMessage("手机号不允许为空！");
             result.setSuccess(false);
             return result;
@@ -296,20 +303,20 @@ public class LoginController {
             // 注册模板
             if (CommonConstant.SMS_TPL_TYPE_1.equals(smsmode)) {
                 SysUser sysUser = sysUserService.getUserByPhone(mobile);
-                if(sysUser!=null) {
+                if (sysUser != null) {
                     result.error500(" 手机号已经注册，请直接登录！");
                     baseCommonService.addLog("手机号已经注册，请直接登录！", CommonConstant.LOG_TYPE_1, null);
                     return result;
                 }
                 b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.REGISTER_TEMPLATE_CODE);
-            }else {
+            } else {
                 // 登录模式，校验用户有效性
                 SysUser sysUser = sysUserService.getUserByPhone(mobile);
                 result = sysUserService.checkUserIsEffective(sysUser);
-                if(!result.isSuccess()) {
+                if (!result.isSuccess()) {
                     String message = result.getMessage();
-                    String userNotExist="该用户不存在，请注册";
-                    if(userNotExist.equals(message)){
+                    String userNotExist = "该用户不存在，请注册";
+                    if (userNotExist.equals(message)) {
                         result.error500("该用户不存在或未绑定手机号");
                     }
                     return result;
@@ -321,7 +328,7 @@ public class LoginController {
                 if (CommonConstant.SMS_TPL_TYPE_0.equals(smsmode)) {
                     //登录模板
                     b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.LOGIN_TEMPLATE_CODE);
-                } else if(CommonConstant.SMS_TPL_TYPE_2.equals(smsmode)) {
+                } else if (CommonConstant.SMS_TPL_TYPE_2.equals(smsmode)) {
                     //忘记密码模板
                     b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.FORGET_PASSWORD_TEMPLATE_CODE);
                 }
@@ -361,7 +368,7 @@ public class LoginController {
         // 校验用户有效性
         SysUser sysUser = sysUserService.getUserByPhone(phone);
         result = sysUserService.checkUserIsEffective(sysUser);
-        if(!result.isSuccess()) {
+        if (!result.isSuccess()) {
             return result;
         }
 
@@ -450,5 +457,118 @@ public class LoginController {
             var3.put("statusCode", 300);
         }
         return var3;
+    }
+
+    /**
+     * @MethodName getListAppMenuByRoleId
+     * @Description TODO 根据角色Id获取对应app菜单  ，当点击更多的时候前端才传type (more) 和id（标签的id）过来
+     * @Param type
+     * @Param id  传入id为了显示当前标签下的分类详情
+     * @Return java.lang.Object
+     * @Author lmy
+     * @Date 2024-12-06 10:14
+     */
+    @ApiOperation(value = "根据角色Id获取对应app菜单")
+    @ApiImplicitParam(name = "type", value = "type", required = false, dataType = "String")
+    @ResponseBody
+    @RequestMapping(value = "/getListAppMenuByRoleId", method = RequestMethod.POST)
+    public Object getListAppMenuByRoleId(String type, Integer id) {
+        Result<JSONObject> result = new Result<JSONObject>();
+//        import cn.xxx.common.bean.LoginInfo;
+//        String roleId = LoginInfo.getRoleId();
+        String roleId = String.valueOf(1);
+        if (StringUtil.isNullOrEmpty(roleId)) {
+            return result.error500("该用户查找不到角色信息，请联系管理员！！！");
+        }
+        List<AppMenuVo> list = getAppMenuList(authAccessViewService.getListAppMenuByRoleId(roleId));
+        if (null == list || list.isEmpty()) {
+            return result.error500("该账号查询不到授权APP菜单，请联系管理员！！！");
+        }
+        List<AppMenuVo> appMenuVos = list.get(0).getList();
+        if (!"more".equals(type)) {
+            AppMenuVo appMenuVo = null;
+            for (int i = 0; i < appMenuVos.size(); i++) {
+                //先判断为空
+                if (appMenuVos.get(i).getList() != null && !appMenuVos.get(i).getList().isEmpty()) {
+                    if (appMenuVos.get(i).getList().size() > 8) {
+                        //当>8的时候追加
+                        appMenuVo = new AppMenuVo();
+                        appMenuVo.setColor("blue");
+                        appMenuVo.setCuIcon("zhankai");
+                        appMenuVo.setName("更多");
+                        appMenuVo.setId(appMenuVos.get(i).getId());
+                        appMenuVo.setUrl("../function/function");
+                        //第8个追加
+                        appMenuVos.get(i).getList().add(7, appMenuVo);
+                        //移除第9个以及后面元素
+                        List sublist = appMenuVos.get(i).getList().subList(8, appMenuVos.get(i).getList().size());
+                        appMenuVos.get(i).getList().removeAll(sublist);
+                        break;
+                    }
+                }
+            }
+        }
+        //#TODO  是为了考虑只显示当前分类下的更多
+        //else {
+        //    //点击更多时
+        //    if (null == id) {
+        //        return failure("ID不能为空，请检查!!!");
+        //    }
+        //    for (int i = 0; i < appMenuVos.size(); i++) {
+        //        //如果ID相等直接返回
+        //        if (id.equals(appMenuVos.get(i).getId())) {
+        //            return appMenuVos.get(i);
+        //        }
+        //    }
+        //}
+
+        return appMenuVos;
+    }
+
+
+    //获得树级结构菜单
+    public List<AppMenuVo> getAppMenuList(List<AppMenuVo> list) {
+        //TODO 组装一个根节点数据
+        AppMenuVo commonMenu = new AppMenuVo();
+        commonMenu.setPid(0);
+        commonMenu.setId(1);
+        commonMenu.setName("系统资源树");
+        list.add(commonMenu);
+
+        //存储根节点的菜单，即一级菜单
+        List<AppMenuVo> rootlist = new ArrayList<>();
+        //遍历所有数据，找到根节点菜单
+        for (AppMenuVo menuDTO : list) {
+            // TODO ID为1 则默认根节点不可删除，删除导致系统异常
+            if (menuDTO.getId().equals(1)) {
+                //找到根节点菜单的时候，寻找这个根节点菜单下的子节点菜单。
+                findChilds(menuDTO, list);
+                //添加到根节点的列表中
+                rootlist.add(menuDTO);
+            }
+        }
+        return rootlist;
+    }
+
+    private void findChilds(AppMenuVo root, List<AppMenuVo> list) {
+        List<AppMenuVo> childlist = new ArrayList<>();
+        //遍历所有数据，找到是入参父节点的子节点的数据，然后加到childlist集合中。
+        for (AppMenuVo menu : list) {
+            if (root.getId().equals(menu.getPid())) {
+                childlist.add(menu);
+            }
+        }
+
+        //若子节点不存在，那么就不必再遍历子节点中的子节点了 直接返回。
+        if (childlist.size() == 0) {
+            return;
+        }
+        //设置父节点的子节点列表
+        root.setList(childlist);
+
+        //若子节点存在，接着递归调用该方法，寻找子节点的子节点。
+        for (AppMenuVo childs : childlist) {
+            findChilds(childs, list);
+        }
     }
 }
