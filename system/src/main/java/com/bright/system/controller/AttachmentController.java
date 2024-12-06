@@ -1,18 +1,18 @@
 //package com.bright.system.controller;
 //
-//import cn.ewsd.common.utils.BaseUtils;
-//import cn.ewsd.common.utils.JsonUtils;
-//import cn.ewsd.common.utils.StringUtils;
+//import cn.xxx.common.utils.BaseUtils;
+//import cn.xxx.common.utils.JsonUtils;
+//import cn.xxx.common.utils.StringUtils;
 //import cn.hutool.core.util.ArrayUtil;
 //import com.aliyun.oss.OSSClient;
-//import com.misboot.system.config.UeditorConfig;
-//import com.misboot.system.model.Attachment;
-//import com.misboot.system.service.AttachmentService;
-//import com.misboot.system.utils.ImportExeclUtil;
-//import com.misboot.system.utils.PageParam;
-//import com.misboot.system.utils.PageSet;
-//import com.misboot.system.vo.FileUplaodTab;
-//import com.misboot.system.vo.OtherTab;
+//import com.bright.system.config.UeditorConfig;
+//import com.bright.system.model.Attachment;
+//import com.bright.system.service.AttachmentService;
+//import com.bright.system.utils.ImportExeclUtil;
+//import com.bright.system.utils.PageParam;
+//import com.bright.system.utils.PageSet;
+//import com.bright.system.vo.FileUplaodTab;
+//import com.bright.system.vo.OtherTab;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiImplicitParam;
 //import io.swagger.annotations.ApiOperation;
@@ -71,7 +71,7 @@
 //
 //    public static String accessKeyId = "4WEX9WabROAtS62m";
 //    public static String accessKeySecret = "0rjT6OsMLF1c7Sa6LGgQKoQWgkKO55";
-//    public static String bucketName = "ewsd";
+//    public static String bucketName = "xxx";
 //
 //
 //    //分页数据集
@@ -93,7 +93,7 @@
 //            String filterSort = BaseUtils.filterSort(request, " and puuid = '" + puuid + "'");
 //            pageSet = attachmentService.getPageSet(pageParam, filterSort);
 //            for (Attachment attachment : pageSet.getRows()) {
-//                attachment.setFilSize(com.misboot.system.utils.file.FileUtils.getSize(attachment.getFileSize()));
+//                attachment.setFilSize(com.bright.system.utils.file.FileUtils.getSize(attachment.getFileSize()));
 //            }
 //        }
 //        return pageSet;
@@ -583,7 +583,7 @@
 //                }
 //                String uploadPath = getUploadDir(storePath);
 //                //
-//                ////获取服务器根目录 D:\wwwroot\java\ewsdSC\system\src\main\resources\static
+//                ////获取服务器根目录 D:\wwwroot\java\xxxSC\system\src\main\resources\static
 //                //File path = new File(ResourceUtils.getURL("classpath:").getPath().replace("target/classes","src/main/resources/static"));
 //                //// 编辑上传目录，使其生效
 //                //File uploadPath = new File(path.getAbsolutePath(),storePath);

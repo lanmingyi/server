@@ -1,15 +1,15 @@
 //package com.bright.system.controller;
 //
-//import cn.ewsd.common.bean.LoginInfo;
-//import cn.ewsd.common.utils.BaseUtils;
+//import cn.xxx.common.bean.LoginInfo;
+//import cn.xxx.common.utils.BaseUtils;
 //import cn.hutool.core.util.StrUtil;
 //import com.alibaba.fastjson.JSON;
 //import com.alibaba.fastjson.JSONObject;
-//import com.misboot.system.model.SysConfiguration;
-//import com.misboot.system.service.SysConfigurationService;
-//import com.misboot.system.utils.PageParam;
-//import com.misboot.system.utils.PageSet;
-//import com.misboot.system.vo.*;
+//import com.bright.system.model.SysConfiguration;
+//import com.bright.system.service.SysConfigurationService;
+//import com.bright.system.utils.PageParam;
+//import com.bright.system.utils.PageSet;
+//import com.bright.system.vo.*;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiImplicitParam;
 //import io.swagger.annotations.ApiOperation;

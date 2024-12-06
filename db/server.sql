@@ -11,11 +11,92 @@
  Target Server Version : 50735 (5.7.35)
  File Encoding         : 65001
 
- Date: 26/11/2024 21:39:56
+ Date: 06/12/2024 18:28:50
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for sys_auth_access
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_auth_access`;
+CREATE TABLE `sys_auth_access`  (
+  `uuid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标识',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `creator_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人唯一标识',
+  `is_del` int(11) NULL DEFAULT NULL COMMENT '是否删除  0-否   1-是',
+  `modifier` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '修改人',
+  `modifier_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '修改人唯一标识',
+  `modify_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `access_auth` int(1) NULL DEFAULT NULL COMMENT '是否授权   0-否  1-是',
+  `attributes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '属性',
+  `checked` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '选中',
+  `children` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '孩子节点属性',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代码',
+  `code_set_id` int(11) NULL DEFAULT NULL COMMENT '代码唯一值',
+  `icon_cls` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图表',
+  `id` int(11) NOT NULL COMMENT '编码',
+  `level_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '层级',
+  `pid` int(11) NOT NULL COMMENT '父级编码',
+  `resource_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '资源类型',
+  `role_id` int(11) NULL DEFAULT NULL COMMENT '角色ID',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否展开',
+  `status` int(11) NULL DEFAULT NULL COMMENT '状态',
+  `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `authorize` int(1) NULL DEFAULT NULL COMMENT '授权',
+  `creator_org_id` int(11) NULL DEFAULT NULL COMMENT '机构ID',
+  PRIMARY KEY (`uuid`) USING BTREE,
+  UNIQUE INDEX `uuid`(`uuid`) USING BTREE,
+  UNIQUE INDEX `id_roleId_index`(`id`, `role_id`) USING BTREE,
+  INDEX `roleId`(`role_id`) USING BTREE,
+  CONSTRAINT `sys_auth_access_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_auth_group` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `sys_auth_access_ibfk_2` FOREIGN KEY (`id`) REFERENCES `sys_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单按钮权限存储表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_auth_access
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_auth_group
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_auth_group`;
+CREATE TABLE `sys_auth_group`  (
+  `uuid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标识',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `creator_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人唯一标识',
+  `is_del` int(11) NULL DEFAULT NULL COMMENT '是否删除  0-否  1-是',
+  `modifier` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '修改人',
+  `modifier_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '修改人唯一标识',
+  `modify_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代码',
+  `code_set_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代码唯一值',
+  `id` int(11) NULL DEFAULT NULL COMMENT '编码',
+  `level_id` int(11) NULL DEFAULT NULL COMMENT '层级',
+  `menu_id` int(11) NULL DEFAULT NULL COMMENT '菜单ID',
+  `pid` int(11) NULL DEFAULT NULL COMMENT '父级编码',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否可展开',
+  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '状态',
+  `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '分组名',
+  `creator_org_id` int(11) NULL DEFAULT NULL COMMENT '机构ID',
+  `role_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色类型(系统菜单，APP)',
+  PRIMARY KEY (`uuid`) USING BTREE,
+  UNIQUE INDEX `id`(`id`) USING BTREE,
+  INDEX `sys_auth_group_fk_1`(`pid`) USING BTREE,
+  CONSTRAINT `sys_auth_group_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `sys_auth_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_auth_group
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_depart
@@ -323,6 +404,72 @@ INSERT INTO `sys_log` VALUES ('1861389246741381121', 1, '用户名: admin,登录
 INSERT INTO `sys_log` VALUES ('1861389522038718466', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-26 20:40:20', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1861389686182805505', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-26 20:40:59', NULL, NULL);
 INSERT INTO `sys_log` VALUES ('1861395549991763970', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-26 21:04:17', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1861581881338392578', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-27 09:24:42', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1861613829251297281', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-27 11:31:39', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862010862634196993', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 13:49:19', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862010875590402049', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 13:49:22', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862010956464971778', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 13:49:41', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862014913123901442', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 14:05:25', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862019959001636866', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 14:25:28', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862023645262135297', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 14:40:06', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862023693962199041', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 14:40:18', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862023970261975042', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 14:41:24', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862024295119208449', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 14:42:41', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862034712704991233', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 15:24:05', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862060879432531970', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 17:08:04', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862068463782739969', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-28 17:38:12', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862309954077765633', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-29 09:37:48', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1862329385700995073', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-29 10:55:01', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1863514201930780674', 1, '用户名: admin,登录成功！', NULL, 'admin', '兰明易', '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-12-02 17:23:03', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1864868675278548994', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-12-06 11:05:14', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1864879942068285441', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-12-06 11:50:01', NULL, NULL);
+INSERT INTO `sys_log` VALUES ('1864910098698809345', 1, '用户名: admin,登录成功[移动端]！', NULL, NULL, NULL, '0:0:0:0:0:0:0:1', NULL, NULL, NULL, NULL, NULL, NULL, '2024-12-06 13:49:51', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for sys_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu`  (
+  `uuid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标识',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `creator_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人唯一标识',
+  `is_del` int(11) NULL DEFAULT NULL COMMENT '是否删除',
+  `modifier` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人',
+  `modifier_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '修改人唯一标识',
+  `modify_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `attributes` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '属性',
+  `checked` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否选中',
+  `children` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '孩子节点',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代码',
+  `code_set_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '代码唯一值id',
+  `icon_cls` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标',
+  `id` int(11) NOT NULL COMMENT '编码',
+  `level_id` int(11) NULL DEFAULT NULL COMMENT '层级',
+  `pid` int(11) NOT NULL COMMENT '父级编码',
+  `resource_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '资源类型',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否有子节点',
+  `status` int(11) NULL DEFAULT NULL COMMENT '状态',
+  `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址',
+  `creator_org_id` int(11) NULL DEFAULT NULL COMMENT '机构ID',
+  `icon_cls_colour` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图标颜色',
+  `text_colour` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '名称颜色',
+  `assembly` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '组件',
+  `keep_alive` tinyint(255) NULL DEFAULT NULL COMMENT '是否缓存菜单',
+  PRIMARY KEY (`uuid`) USING BTREE,
+  UNIQUE INDEX `uuid`(`uuid`) USING BTREE,
+  UNIQUE INDEX `id`(`id`) USING BTREE,
+  INDEX `pid`(`pid`) USING BTREE,
+  INDEX `uuid_2`(`uuid`, `id`) USING BTREE,
+  CONSTRAINT `sys_menu_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `sys_menu` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统菜单表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -423,7 +570,7 @@ INSERT INTO `sys_permission` VALUES ('1584876317008211969', '1563449103292620801
 INSERT INTO `sys_permission` VALUES ('1593159248304910337', 'e41b69c57a941a3bbcce45032fe57605', '移动开发', '/system/sysAppBasics/index', 'system/sysAppBasics/index', NULL, NULL, 1, NULL, '1', 2.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-11-17 16:28:59', 'admin', '2022-12-17 17:53:39', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1600401879309492226', '', '移动应用', '/APP', 'APP', NULL, NULL, 0, NULL, '1', 100.00, 0, 'mobile', 0, 0, 1, 1, 0, NULL, 'admin', '2022-12-07 16:08:37', 'admin', '2024-11-12 23:03:55', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1600405828720664577', '1600401879309492226', '包罗万象', '/TabsView', 'TabsView', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 0, 0, 0, 0, NULL, 'admin', '2022-12-07 16:24:18', 'admin', '2022-12-07 23:12:00', 0, 0, '1', 0);
-INSERT INTO `sys_permission` VALUES ('1600407326720532481', '1600405828720664577', '考勤打卡', '/../application/submission/mileageSubmit', '../application/submission/mileageSubmit', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-12-07 16:30:15', NULL, NULL, 0, 0, '1', 0);
+INSERT INTO `sys_permission` VALUES ('1600407326720532481', '1600405828720664577', '提报', '/../application/submission/mileageSubmit', '../application/submission/mileageSubmit', NULL, NULL, 1, NULL, '1', 1.00, 0, NULL, 1, 1, 0, 0, 0, NULL, 'admin', '2022-12-07 16:30:15', NULL, NULL, 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1600481964395401218', '1600401879309492226', '常用服务', '/TabsView', 'TabsView', NULL, NULL, 1, NULL, '1', 2.00, 0, NULL, 1, 0, 0, 0, 0, NULL, 'admin', '2022-12-07 21:26:50', 'admin', '2022-12-07 23:27:37', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1600491157110198274', '1600401879309492226', '财务专区', '/TabsView', 'TabsView', NULL, NULL, 1, NULL, '1', 4.00, 0, NULL, 1, 0, 0, 0, 0, NULL, 'admin', '2022-12-07 22:03:22', 'admin', '2022-12-07 23:41:07', 0, 0, '1', 0);
 INSERT INTO `sys_permission` VALUES ('1600491234256031746', '1600401879309492226', '办公专区', '/TabsView', 'TabsView', NULL, NULL, 1, NULL, '1', 3.00, 0, NULL, 1, 0, 0, 0, 0, NULL, 'admin', '2022-12-07 22:03:41', 'admin', '2022-12-07 23:41:11', 0, 0, '1', 0);
@@ -2812,5 +2959,153 @@ INSERT INTO `sys_user_role` VALUES ('1619980585851387906', '1619978721185464321'
 INSERT INTO `sys_user_role` VALUES ('f2922a38ba24fb53749e45a0c459adb3', '439ae3e9bcf7418583fcd429cadb1d72', '1');
 INSERT INTO `sys_user_role` VALUES ('ee45d0343ecec894b6886effc92cb0b7', '4d8fef4667574b24a9ccfedaf257810c', 'f6817f48af4fb3af11b9e8bf182f618b');
 INSERT INTO `sys_user_role` VALUES ('1619973264303685633', 'e9ca23d68d884d4ebb19d07889727dae', 'f6817f48af4fb3af11b9e8bf182f618b');
+
+-- ----------------------------
+-- View structure for v_sys_auth_access
+-- ----------------------------
+DROP VIEW IF EXISTS `v_sys_auth_access`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_sys_auth_access` AS select distinct `m`.`id` AS `id`,`m`.`code_set_id` AS `code_set_id`,`m`.`resource_type` AS `resource_type`,`m`.`level_id` AS `level_id`,`m`.`pid` AS `pid`,`m`.`state` AS `mstate`,`a`.`state` AS `state`,`m`.`icon_cls` AS `icon_cls`,`m`.`text` AS `text`,`m`.`url` AS `url`,`m`.`is_del` AS `is_del`,`m`.`status` AS `status`,`m`.`sort` AS `sort`,`a`.`uuid` AS `uuid`,`a`.`role_id` AS `role_id`,`a`.`access_auth` AS `access_auth`,`m`.`icon_cls_colour` AS `icon_cls_colour`,`m`.`text_colour` AS `text_colour`,`m`.`remark` AS `remark` from (`sys_menu` `m` left join `sys_auth_access` `a` on((`m`.`id` = `a`.`id`))) where ((`a`.`access_auth` = 1) and (`m`.`status` = 1) and (`m`.`code_set_id` = 'menu'));
+
+-- ----------------------------
+-- Procedure structure for p_setMenuStateByRecursion
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_setMenuStateByRecursion`;
+delimiter ;;
+CREATE PROCEDURE `p_setMenuStateByRecursion`(IN `p_pid` char(5))
+BEGIN
+	
+	DECLARE done INT DEFAULT FALSE;
+	DECLARE v_id INT;
+	DECLARE v_pid INT;
+	DECLARE v_text VARCHAR(500) CHARSET utf8 DEFAULT '';
+	DECLARE v_state VARCHAR(10);
+	DECLARE v_totalNums INT DEFAULT 0;
+
+	DECLARE cur1 CURSOR FOR SELECT id,pid,text,state FROM sys_menu WHERE pid=p_pid AND level_id <> 0 AND status <> 0;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+	set max_sp_recursion_depth = 100;
+
+	OPEN cur1;
+		read_loop: LOOP
+			FETCH cur1 INTO v_id,v_pid,v_text,v_state;
+			IF done THEN
+				LEAVE read_loop;
+			END IF;
+			
+			SELECT COUNT(*) INTO v_totalNums FROM sys_menu WHERE pid=v_id AND resource_type='menu' AND status <> 0;
+			IF v_totalNums=0 THEN
+				UPDATE sys_auth_access SET state = 'open' WHERE id=v_id;
+			ELSE
+				UPDATE sys_auth_access SET state = 'closed' WHERE id=v_id;
+			END IF;
+			
+			call p_setMenuStateByRecursion(v_id);
+		END LOOP;
+	CLOSE cur1;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for p_sys_auth_access_insert_single
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `p_sys_auth_access_insert_single`;
+delimiter ;;
+CREATE PROCEDURE `p_sys_auth_access_insert_single`(IN `p_id` int,IN `p_pid` int,IN `p_text` varchar(255) CHARSET utf8,IN `p_url` varchar(255),IN `p_remark` varchar(500),IN `p_creatorOrgId` int)
+BEGIN
+	
+	
+	declare v_roleId int;
+	declare stop int default 0;
+	DECLARE v_text VARCHAR(500) CHARSET utf8 DEFAULT '';
+
+	declare cur cursor for(select id from sys_auth_group WHERE menu_id > 0);
+	
+	declare CONTINUE HANDLER FOR SQLSTATE '02000' SET stop = null;
+	
+	OPEN cur;
+	
+			FETCH cur INTO v_roleId;
+			WHILE (stop is not null) DO
+				INSERT INTO sys_auth_access (uuid,is_del,role_id,id,pid,text,url,remark,creator_org_id) VALUES (f_generateUuid(),0,v_roleId,p_id,p_pid,p_text,p_url,p_remark,p_creatorOrgId);
+				FETCH cur INTO v_roleId;
+			END WHILE;
+	
+	CLOSE cur;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table sys_auth_group
+-- ----------------------------
+DROP TRIGGER IF EXISTS `t_sys_auth_access_insert_multiple`;
+delimiter ;;
+CREATE TRIGGER `t_sys_auth_access_insert_multiple` AFTER INSERT ON `sys_auth_group` FOR EACH ROW begin
+    CALL p_sys_auth_access_insert_multiple(new.id,1);
+    INSERT INTO sys_auth_access (uuid,is_del,role_id,id,pid,text,state,creator_org_id) values (f_generateUuid(),0,new.id,1,1,'导航菜单','closed',new.creator_org_id);
+end
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table sys_auth_group
+-- ----------------------------
+DROP TRIGGER IF EXISTS `t_sys_auth_access_update`;
+delimiter ;;
+CREATE TRIGGER `t_sys_auth_access_update` AFTER UPDATE ON `sys_auth_group` FOR EACH ROW begin
+    UPDATE sys_auth_access SET role_id=new.id WHERE role_id=old.id;
+end
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table sys_auth_group
+-- ----------------------------
+DROP TRIGGER IF EXISTS `t_sys_auth_access_delete`;
+delimiter ;;
+CREATE TRIGGER `t_sys_auth_access_delete` AFTER DELETE ON `sys_auth_group` FOR EACH ROW begin
+    DELETE FROM sys_auth_access WHERE role_id=old.id;
+end
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table sys_menu
+-- ----------------------------
+DROP TRIGGER IF EXISTS `t_menu_sys_auth_access_insert`;
+delimiter ;;
+CREATE TRIGGER `t_menu_sys_auth_access_insert` AFTER INSERT ON `sys_menu` FOR EACH ROW begin
+    CALL p_sys_auth_access_insert_single(new.id,new.pid,new.text,new.url,new.remark,new.creator_org_id);
+    UPDATE sys_auth_access SET access_auth=1 WHERE role_id=34;
+    CALL p_setMenuStateByRecursion(1);
+end
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table sys_menu
+-- ----------------------------
+DROP TRIGGER IF EXISTS `t_menu_sys_auth_access_update`;
+delimiter ;;
+CREATE TRIGGER `t_menu_sys_auth_access_update` AFTER UPDATE ON `sys_menu` FOR EACH ROW begin
+    UPDATE sys_auth_access SET is_del=new.is_del,id=new.id, pid=new.pid,text=new.text,state=new.state,url=new.url,remark=new.remark,creator_org_id=new.creator_org_id WHERE id=new.id;
+    CALL p_setMenuStateByRecursion(1);
+end
+;;
+delimiter ;
+
+-- ----------------------------
+-- Triggers structure for table sys_menu
+-- ----------------------------
+DROP TRIGGER IF EXISTS `t_menu_sys_auth_access_delete`;
+delimiter ;;
+CREATE TRIGGER `t_menu_sys_auth_access_delete` AFTER DELETE ON `sys_menu` FOR EACH ROW begin
+    DELETE FROM sys_auth_access WHERE id=old.id;
+    CALL p_setMenuStateByRecursion(1);
+end
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;
